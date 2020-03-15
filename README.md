@@ -12,6 +12,7 @@ this is my blog archive repository.
 + [Universidad de Dude](http://yoroto.io/)
 + [Using Emacs Series](https://cestlaz.github.io/stories/emacs/)
 + [How to Design Programs](https://htdp.org/)  [Matthias Felleisen](https://felleisen.org/matthias/)
++ [Bartosz Milewski's Programming Cafe](https://bartoszmilewski.com/)
 + [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/); [hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-pdf)
 + [sarabander/sicp-pdf](https://github.com/sarabander/sicp-pdf)
 + [Asynchronous C# and F#](http://tomasp.net/blog/csharp-fsharp-async-intro.aspx/)  [Tomas Petricek - New ways of thinking in programming & working with data](http://tomasp.net/)
