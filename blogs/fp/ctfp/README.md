@@ -31,6 +31,10 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 
 ---
 
+## 阅读笔记
+
+1. [Category: The Essence of Composition](./1.category-the-essence-of-composition.md)
+
 ## Table of Contents
 
 [The Preface](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
