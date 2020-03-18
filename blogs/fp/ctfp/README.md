@@ -34,6 +34,9 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 ## 阅读笔记
 
 1. [Category: The Essence of Composition](./1.category-the-essence-of-composition.md)
+2. [Types and Functions](./2.types-and-functions.md)
+3. [Categories Great and Small](./3.categories-great-and-small.md)
+4. [Kleisli Categories](./4.kleisli-categories.md)
 
 ## Table of Contents
 
