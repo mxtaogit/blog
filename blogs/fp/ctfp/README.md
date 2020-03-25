@@ -37,6 +37,9 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 2. [Types and Functions](./2.types-and-functions.md)
 3. [Categories Great and Small](./3.categories-great-and-small.md)
 4. [Kleisli Categories](./4.kleisli-categories.md)
+5. [Products and Coproducts](./5.products-and-coproducts.md)
+6. [Simple Algebraic Data Type](./6.simple-algebraic-data-type.md)
+7. [Functors](./7.functors.md)
 
 ## Table of Contents
 
