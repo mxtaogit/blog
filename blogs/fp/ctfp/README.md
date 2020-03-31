@@ -40,6 +40,7 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 5. [Products and Coproducts](./5.products-and-coproducts.md)
 6. [Simple Algebraic Data Type](./6.simple-algebraic-data-type.md)
 7. [Functors](./7.functors.md)
+8. [Functoriality](./8.functoriality.md)
 
 ## Table of Contents
 
