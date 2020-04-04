@@ -41,6 +41,8 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 6. [Simple Algebraic Data Type](./6.simple-algebraic-data-type.md)
 7. [Functors](./7.functors.md)
 8. [Functoriality](./8.functoriality.md)
+9. [Function Type](./9.function-type.md)
+10. [Natural Transformations](./10.natural-transformations.md)
 
 ## Table of Contents
 
