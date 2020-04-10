@@ -253,4 +253,77 @@ date: 2020-04-07
 
     + 作为集合
 
+        伴随着一个满足结合律的二元运算和一个特殊“中立”元素的的集合被称为幺半群。对与该二元运算，这个“中立”元素的行为类似一个返回其自身的“unit”。
+
+        例如，加法运算和包含0的自然数集便形成一个幺半群。结合律是指`(a+b)+c=a+(b+c)`或$\lparen a + b \rparen + c = a + \lparen b + c \rparen$。这个理想的、永远保持“中立”的元素是`0`，因为`0+a=a`以及`a+0=a`（$0+a=a$ $a+0=a$）。由于加法满足交换律（`a+b=b+a` $a+b=b+a$），所以似乎再强调`a+0=a`有点多余。但应注意，交换律并非幺半群所需。例如，字符串连接运算不遵守交换律，但字符串及其连接运算可以构成幺半群，它的中立元素是空字符串。
+
     + 作为范畴
+
+    ```haskell
+    -- Haskell
+
+    -- 定义 `Monoid` 类型类
+    class Monoid m where
+        empty :: m
+        append :: m -> m -> m   -- currying form
+
+    -- 将 `String` 声明为一个 `Monoid` ，提供 `empty` `append` 的实现
+    instance Monoid String where
+        empty = ""
+        append = (++)      -- 中缀运算符用括号包住后，就转化为接受两个参数的函数
+    ```
+
+    ```fsharp
+    // F#
+
+    // F# 中不存在 类型类/type class 的概念，参考Scala版本尝试给出了使用接口进行的定义
+    module Monoid =
+        open System     // `String`类存在于`System`名称空间下，或者可以直接用F#为之给出的类型别名：`string`
+        // F# 中定义泛型类型时，写法可以是`type 'T Monoid`或`type Monoid<'T>`
+        type 'T Monoid =
+            abstract member Zero: 'T
+            abstract member BiOp: ('T -> 'T -> 'T)      // 注意，此处给出`BiOp`的类型`('T -> 'T -> 'T)`时带上了括号
+
+        let stringMonoid = {
+            new Monoid<String> with
+                member _.Zero = ""
+                member _.BiOp = (+)
+            }
+
+        // 似乎基于对接口的实现来定义一个新的类并不合适？
+        type StringMonoid =
+            interface String Monoid with    // 也可以写作`Monoid<String>`
+                member _.Zero = ""
+                member _.BiOp = (+)
+
+        // ---------------------------
+        // F#是一门混合范式语言，一般是函数式编程范式优先。但是涉及到与面向对象范式混合编程时，存在一些注意事项
+        // 在函数式世界里，函数是一等公民，也可以作为一个值来用，无需任何处理。
+        let add1 = fun x -> x + 1       // 将“函数值”绑定到名称`add1`上     `add1`的类型是`int -> int`
+        let add' = add1                 // 将`add1`的值绑定到名称`add'`上   `add'`的类型是`int -> int`
+
+        type Addable =      // 定义`Addable`接口，开始使用面向对象编程范式
+            abstract member AddFunc: int -> int     // 没有括号，F#编译器将之处理成一个接受`int`返回`int`的函数
+            abstract member AddProp: (int -> int)   // 带上括号，F#编译器将之处理成一个`int -> int`类型的只读属性，委托？ todo！！！
+    ```
+
+    ```scala
+    object Monoid {
+        trait Monoid[M] {
+            def zero : M
+            def biOp : (M, M) => M
+        }
+
+        val stringMonoid = new Monoid[String] {
+            def zero = ""
+            def biOp = _ + _
+        }
+
+        class StringMonoid extends Monoid[String] {
+            def zero = ""
+            def biOp = _ + _
+        }
+    }
+    ```
+
+    > 注：概念上 `append = (+)` 与 `append s1 s2 = (+) s1 s2` 是不同的。前者是**Hask**范畴（忽略"Bottom Type"的话则是**Set**）中态射的相等，这样不仅写法简洁，也经常被泛化到其它范畴。后者称为外延相等/extensional equality，陈述的是对任意两个输入，`append` 与 `(+)` 的值是相同的。由于参数的值有时也被称为point（函数$f$在点$x$出的值），外延相等也被称为point-wise相等，未指定参数的函数相等称为point-free相等。
