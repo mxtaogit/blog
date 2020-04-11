@@ -259,6 +259,16 @@ date: 2020-04-07
 
     + 作为范畴
 
+        幺半群可被描述为带有一个态射集的单对象范畴，这些态射皆符合复合规则。
+
+        只含单个对象m的范畴M存在hom-集M(m,m)。在这个集合上可以定义一个二元运算，M(m,m)中两元素“相乘”相当于两态射的复合。复合总是存在的，因为这些态射的源对象与目标对象是同一个对象。这种“乘法运算”也符合范畴论法则中的结合律，因为态射复合满足结合律。恒等态射也是肯定存在的。因此，总是能够从幺半群范畴中复原出幺半群集合。因此，幺半群范畴与幺半群集合是同一个东西。
+
+        > 在范畴论中，是在尝试放弃查看集合及其元素，转而讨论对象和态射。因此，现从范畴的角度来看作用于集合的二元运算。
+        >
+        > 例如，一个将每个自然数都加5的运算（会将0映射为5、将1映射为6等等）这样就在自然数集上定义了一个函数，现在有了一个函数与一个集合。通常对于任意数字n，都会有一个加n的函数，称之为“adder”。把这些“adder”采用符合直觉的方式去复合，例如`adder5`与`adder7`的复合式`adder12`。因此“adder”的复合等同于加法规则，现在可以用函数的复合来代替加法运算。此外，还有一个面向中立元素0的`adder0`，它不会改变任何东西，因此它是自然数集上的恒等函数。
+
+        > 每个范畴化的幺半群都会定义一个唯一的伴随二元运算的集合的幺半群，事实上总是能够从单个对象的范畴中抽出一个集合，这个集合是态射的集合。
+
     ```haskell
     -- Haskell
 
@@ -278,33 +288,49 @@ date: 2020-04-07
 
     // F# 中不存在 类型类/type class 的概念，参考Scala版本尝试给出了使用接口进行的定义
     module Monoid =
-        open System     // `String`类存在于`System`名称空间下，或者可以直接用F#为之给出的类型别名：`string`
-        // F# 中定义泛型类型时，写法可以是`type 'T Monoid`或`type Monoid<'T>`
-        type 'T Monoid =
+        open System         // `String`类存在于`System`名称空间下，或者可以直接用F#为之给出的类型别名：`string`，此处是为了形式一致
+        type Monoid<'T> =   // F# 中定义泛型类型时，写法可以是`type 'T Monoid`或`type Monoid<'T>`
             abstract member Zero: 'T
             abstract member BiOp: ('T -> 'T -> 'T)      // 注意，此处给出`BiOp`的类型`('T -> 'T -> 'T)`时带上了括号
 
-        let stringMonoid = {
+        let stringMonoid = {    // 使用对象表达式，直接实例化一个实现了接口的匿名类对象。
             new Monoid<String> with
                 member _.Zero = ""
                 member _.BiOp = (+)
             }
 
-        // 似乎基于对接口的实现来定义一个新的类并不合适？
-        type StringMonoid =
-            interface String Monoid with    // 也可以写作`Monoid<String>`
+        type StringMonoid =     // 似乎基于对接口的实现来定义一个新的类并不合适，似乎不太符合"Monoid"的意义
+            interface Monoid<String> with    // 也可以写作`String Monoid`
                 member _.Zero = ""
                 member _.BiOp = (+)
 
         // ---------------------------
-        // F#是一门混合范式语言，一般是函数式编程范式优先。但是涉及到与面向对象范式混合编程时，存在一些注意事项
-        // 在函数式世界里，函数是一等公民，也可以作为一个值来用，无需任何处理。
-        let add1 = fun x -> x + 1       // 将“函数值”绑定到名称`add1`上     `add1`的类型是`int -> int`
-        let add' = add1                 // 将`add1`的值绑定到名称`add'`上   `add'`的类型是`int -> int`
 
-        type Addable =      // 定义`Addable`接口，开始使用面向对象编程范式
-            abstract member AddFunc: int -> int     // 没有括号，F#编译器将之处理成一个接受`int`返回`int`的函数
-            abstract member AddProp: (int -> int)   // 带上括号，F#编译器将之处理成一个`int -> int`类型的只读属性，委托？ todo！！！
+        // F#是一门混合范式语言，一般是函数式编程范式优先。涉及到与面向对象范式混合编程时，存在一些注意事项
+        // 在函数式世界里，函数是一等公民，可以作为值来用。
+        //      `fun x -> x + 1` 是一个匿名函数值，与数字`1` 字符串`"abc"`的身份没有高低之分
+        //      `let add1 = fun x -> x + 1` 是在将“函数值”绑定到名称`add1`上，与`let a = 1`在做的事情没有区别
+        //      `let add' = add1` 是在将`add1`的值绑定到名称`add'`上，与`let b = a`行为类似
+        // 面向对象的世界里函数/方法并非一等公民，是有特殊处理的
+        type I<'T, 'R> =                    // 定义一个泛型接口
+            abstract member M1: 'T -> 'R    // 没有括号，这是在定义接受`'T`返回`'R`的函数
+            abstract member M2: ('T -> 'R)  // 带上括号，这是在定义`FSharpFunc<'T,'R>`(`'T -> 'R`)类型的只读属性
+        type C<'T, 'R>() =                  // 定义一个泛型类型
+            let f:'T->'R = failwith "err"   // 私有的函数类型字段
+            interface I<'T, 'R> with        // 该类实现泛型接口
+                member _.M1 t = f t         // 实现接口中定义的方法，必须显式给出参数。调用时使用`obj.M1(x)`方式
+                member _.M2 = f             // 实现接口中定义的属性，只能直接赋函数值。这是`FSharpFunc<'T,'R>`类型的属性，注意与`Func<T,R>`类型不同
+
+        // ---------------------------
+
+        // 使用Monoid实例的时候，似乎可以考虑使用静态解析类型参数来进行约束，而不必要求必须是某个接口的实现 ??
+        // 尝试实现失败
+        // Constraints: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints
+        // Statically Resolved Type Parameters: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters
+        // Type extensions: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/type-extensions
+        // 静态解析的类型参数: https://docs.microsoft.com/zh-cn/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters
+        // 只有在定义时或内部类型扩展(Intrinsic type extensions)给出的成员才是符合静态类型约束的
+        // 类型扩展: https://docs.microsoft.com/zh-cn/dotnet/fsharp/language-reference/type-extensions#optional-type-extensions
     ```
 
     ```scala
