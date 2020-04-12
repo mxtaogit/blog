@@ -251,6 +251,8 @@ date: 2020-04-07
 
     幺半群是个简单且重要的概念，它是基本算术幕后的概念：只要有加法或乘法运算就可以形成幺半群。编程中幺半群有很多实例，表现为字符串、列表、可折叠数据结构、并发编程中的`future`、函数式响应编程中的事件等。
 
+    数学上，幺半群$\langle S, *, e \rangle$是指一个带有可结合二元运算($*: S \times S \rightarrow S$，这隐含了$S$对运算$*$封闭)和单位元$e$的代数结构$S$。“可结合”是指二元运算满足结合律，$\forall a,b,c \in S \Rightarrow \lparen a * b \rparen * c = a * \lparen b * c \rparen$；单位元是指，$\exists e \in S \And \forall a \in S \Rightarrow a * e = e * a$
+
     + 作为集合
 
         伴随着一个满足结合律的二元运算和一个特殊“中立”元素的的集合被称为幺半群。对与该二元运算，这个“中立”元素的行为类似一个返回其自身的“unit”。
