@@ -339,6 +339,8 @@ object Monoid {
     trait Monoid[M] {
         def zero : M
         def biOp : (M, M) => M
+        // todo: here ???
+        def biOp(m1: M, m2: M): M
     }
 
     val stringMonoid = new Monoid[String] {
@@ -354,3 +356,11 @@ object Monoid {
 ```
 
 > 注：概念上 `append = (+)` 与 `append s1 s2 = (+) s1 s2` 是不同的。前者是**Hask**范畴（忽略"Bottom Type"的话则是**Set**）中态射的相等，这样不仅写法简洁，也经常被泛化到其它范畴。后者称为外延相等/extensional equality，陈述的是对任意两个输入，`append` 与 `(+)` 的值是相同的。由于参数的值有时也被称为point（函数$f$在点$x$出的值），外延相等也被称为point-wise相等，未指定参数的函数相等称为point-free相等。
+
+## Kleisli范畴 / Kleisli Category
+
+
+
+Writer ???
+
+`>=> :: (a -> M b) -> (b -> M c) -> (a -> M c)`
