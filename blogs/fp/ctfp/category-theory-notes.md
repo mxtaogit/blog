@@ -339,8 +339,6 @@ object Monoid {
     trait Monoid[M] {
         def zero : M
         def biOp : (M, M) => M
-        // todo: here ???
-        def biOp(m1: M, m2: M): M
     }
 
     val stringMonoid = new Monoid[String] {
@@ -352,6 +350,13 @@ object Monoid {
         def zero = ""
         def biOp = _ + _
     }
+}
+
+// -------------------------
+trait T[A, B] {         // 定义一个泛型特质，该特质将会被编译成java interface
+    val value: A        // 在特质中定义一个A类型的值，将会被编译成接口中一个返回A的无参方法
+    def p: A => B       // 在特质中定义一个`A=>B`类型的值，将被编译成一个返回`A=>B`/`Function1[A,B]`的无参方法
+    def m(a: A): B      // 在特质中定义一个接受A返回B的方法，将被编译成一个普通的接口方法
 }
 ```
 
