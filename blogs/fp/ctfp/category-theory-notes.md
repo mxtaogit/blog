@@ -332,6 +332,11 @@ module Monoid =
     // 静态解析的类型参数: https://docs.microsoft.com/zh-cn/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters
     // 只有在定义时或内部类型扩展(Intrinsic type extensions)给出的成员才是符合静态类型约束的
     // 类型扩展: https://docs.microsoft.com/zh-cn/dotnet/fsharp/language-reference/type-extensions#optional-type-extensions
+
+    // todo: 等到F#5发布，扩展成员可以作为满足约束的证据
+    // 参考ISSUE：[RFC FS-1043] Extension members visible to trait constraints #6805： https://github.com/dotnet/fsharp/pull/6805
+    // RFC： https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1043-extension-members-for-operators-and-srtp-constraints.md
+
 ```
 
 ```scala
