@@ -441,10 +441,13 @@ trait T[A, B] {         // 定义一个泛型特质，该特质将会被编译�
 
 ## 余积 / Coproduct
 
-同范畴论中每个构造一样，积的对偶是余积。将积范式中态射的方向反转，便得到了一个对象`c`伴随着两个态射`i :: a -> c`和`j :: b -> c`。对符合余积模式构造的排序方式也反转了，若存在一个态射`m :: c -> c'`，能对伴随`c'`的态射`i' :: a -> c'`及`j' :: b -> c'`进行“类因式分解”，即`i' = m . i` `j' = m . j`。如下图所示
+同范畴论中每个构造一样，积的对偶是余积。将积范式中态射的方向反转，便得到了一个对象`c`伴随着两个入射`i :: a -> c`和`j :: b -> c`。对符合余积模式构造的排序方式也反转了，若存在一个态射`m :: c -> c'`，能对伴随`c'`的入射`i' :: a -> c'`及`j' :: b -> c'`进行“类因式分解”，即`i' = m . i`及`j' = m . j`，如下图所示。因此这个“最好”的对象，对任意的其它模式都有一个唯一的态射“发射”出去，这个对象就是余积。只要它存在，那么它在同构意义上就是唯一的，且这个同构也是唯一的。
 
 ![](./img/coproductranking.jpg)
 
+> A **coproduct** of two objects a and b is the object c equipped with two injections such that for any other object c’ equipped with two injections there is a unique morphism m from c to c’ that factorizes those injections.
+
+对象`a`与`b`的余积是对象`c`伴随着两个入射`i::a->c`及`j::b->c`，对于其它任意的对象`c'`及伴随其的入射`i'::a->c'`及`j':: b->c'`，存在唯一的态射`m::c->c'`，且该态射可以作为“因子”分解`i'`及`j'`
 
 
 > 编程中说的和类型数据结构
