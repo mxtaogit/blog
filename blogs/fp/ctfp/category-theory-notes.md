@@ -498,6 +498,8 @@ Haskell中有一种更通用的办法来定义积类型 `date Pair a b = P a b` 
 
 如果不用泛型序对或元组，也可以定义特定的有名字的积类型，例如`data Stmt = Stmt String Bool`，它是 `String` 与 `Bool` 的积，有自己的名字与构造子。这种风格的类型声明，其优势在于可以为相同的内容定义不同的类型，使之在名称上具备不同的意义与功能，以避免彼此混淆。
 
+F#中，可以`type Pair<'a, 'b> = Pair of 'a * 'b`来定义序对，其本质是定义了一个单例的`union`。
+
 #### 记录 / Record
 
 记录是支持数据成员命名的积类型。
@@ -506,23 +508,21 @@ Haskell中有一种更通用的办法来定义积类型 `date Pair a b = P a b` 
 
 F#中，记录是这种语法`type Element = {name:string; symbol:string, atomicNumber:int}`
 
-> 个人理解，在面向对象世界里，多个字段构成一个类，就是在构造一个积的过程。
+> 感觉也可以这样理解，在面向对象世界里，多个字段构成一个类，就是在构造一个积的过程。
 > 
 > 类型可以看作集合，可以带上一些业务限制。例如班级信息包含年级、班、学生数量字段，这三者可以都是`Int`，但在业务意义上存在限制(例如1-6年级最多3个班最多60人)，可以看作`(1~6) * (1~3) * (1~60)`的积
 
-
 ### 编程中的和类型
 
+余积在编程中的对应物是和类型。
 
-> 编程中的余积相对容易理解，即所谓“和类型”数据结构，是两种类型的带标签的联合。
->
->
-> Haskell可用`data Contact = PhoneNum Int | EmailAddr String`F#可用`type Contact = PhoneNum int | EmailAddr string`
->
-> 这里的`PhoneNum` 与 `EmailAddr` 都是构造子（入射），也可以作为模式匹配时所用的标签
+Haskell官方实现的和类型是`data Either a b = Left a | Right b`。`Either`在同构的意义下是可交换的，也是可嵌套的，而且在同构意义下，嵌套的顺序不重要。因此可以定义出多个类型的和`data OneOfThree a b c = Sinistral a | Medial b | Dextral c`
 
-Haskell标准库中定义的 Either 数据类型是个“正统”的余积实现：`Either a b = Left a | Right b`。数据类型接受两个参数 a 与 b，它还拥有两个构造子：Left 接受类型 a 的值，Right 接受类型 b 的值。
+**Set**对于余积而言也是个（对称的）幺半群范畴。二元运算由不相交和（Disjoint Sum）来承担，`unit`元素便是初始对象。用类型术语来说，可以将`Either`作为幺半群运算符，将`Void`作为中立元素。也就是说，可以认为`Either`类似于运算符`+`，而`Void`类似于`0`。这与事实是相符的，将 `Void` 加到和类型上，不会对和类型有任何影响。例如：`Either a Void`与`a`同构。这是因为无法为这种类型构造`Right`版本的值(不存在类型为`Void`的值)。`Either a Void`只能通过`Left`构造子产生值，这个值只是简单的封装了一个类型为`a`的值。这就类似于`a + 0 = a`。
 
+Haskell中，可以将`Bool`实现为`data Bool = True | False`，就是两个单值的和。`Maybe a = Nothing | Just a`用于表示可能不存在，`Nothing`是个单值表示不存在，因此此定义可以理解成`a+1`，也可重定义成`Maybe a = Either () a`，用`()`表示不存在。`data List a = Nil | Cons a (List a)`，这是一个递归的和类型
+
+F#中似乎没有`Either`的定义，若是用的到，可以自行定义`type Either<'a, 'b> = Left of 'a | Right of 'b`。存在`type Option<'a> = None | Some of 'a` `type ValueOption<'a> = ValueNone | ValueSome of 'a`。`List`实现类似`type List<'a> = [] | :: ('a * 'a list)`
 
 ## Kleisli范畴 / Kleisli Category
 
