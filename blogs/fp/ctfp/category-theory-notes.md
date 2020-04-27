@@ -522,7 +522,51 @@ Haskell官方实现的和类型是`data Either a b = Left a | Right b`。`Either
 
 Haskell中，可以将`Bool`实现为`data Bool = True | False`，就是两个单值的和。`Maybe a = Nothing | Just a`用于表示可能不存在，`Nothing`是个单值表示不存在，因此此定义可以理解成`a+1`，也可重定义成`Maybe a = Either () a`，用`()`表示不存在。`data List a = Nil | Cons a (List a)`，这是一个递归的和类型
 
-F#中似乎没有`Either`的定义，若是用的到，可以自行定义`type Either<'a, 'b> = Left of 'a | Right of 'b`。存在`type Option<'a> = None | Some of 'a` `type ValueOption<'a> = ValueNone | ValueSome of 'a`。`List`实现类似`type List<'a> = [] | :: ('a * 'a list)`
+F#中似乎没有`Either`的定义，若是用的到，可以自行定义`type Either<'a, 'b> = Left of 'a | Right of 'b`。存在`type Option<'a> = None | Some of 'a`或`type ValueOption<'a> = ValueNone | ValueSome of 'a`。`List`实现类似`type List<'a> = [] | :: ('a * 'a list)`
+
+### 类型代数 / Algebra of Types
+
+当前已有了类型系统中两种幺半群结构：以`Void`作为幺元的和类型、以`()`作为幺元的积类型。
+
+将这两种构造想象为加法和乘法，在这个视角中，`Void`类似于`0`，`()`类似于`1`。这种视角是否符合一些事实，例如：与0相乘的结果依然是0，尝试构造一个`(Int, Void)`序对必定失败，因为不存在一个`Void`值，因此`(Int, Void)`等价于`Void`，即`a * 0 = 0`；数学加法和乘法存在分配律`a * (b + c) = a * b + a * c`，对于积类型与和类型而言，在同构意义上也存在分配律，例如：`(a, Either b c) = Either (a, b) (a, c)`
+
+这种互相纠缠的幺半群称为半环/Semiring(之所以不是全环，是因为无法定义减法)。在此仅关心如何描述自然数运算与类型运算之间的对应关系。下表给出一些对应关系
+
+| Number | Type |
+| :-: | :- |
+| 0 | `Void` |
+| 1 | `()` / `unit` |
+| a + b | `Either a b = Left a | Right b` |
+| a * b | `(a, b)` / `Pair a b` |
+| 2 = 1 + 1 | `Bool = True | False` |
+| 1 + a | `Maybe a = Nothing | Just a` / `Option 'a = None | Some of 'a` |
+
+列表类型`List a = Nil | Cons a (List a)`被定义为一个方程的解，因为要定义的类型出现在方程两侧，若将 `List a` 换成`x`，就可以得到这样的方程：`x = 1 + a * x`。
+
+不过，不能使用传统的代数方法去求解这个方程，因为对于类型没有相应的减法与除法运算。不过，可以用一系列的替换，即不断的用 `(1 + a*x)` 来替换方程右侧的 `x`，并使用分配律，这样就有了下面的结果：
+
+```
+x = 1 + a*x
+x = 1 + a*(1 + a*x) = 1 + a + a*a*x
+x = 1 + a + a*a*(1 + a*x) = 1 + a + a*a + a*a*a*x
+...
+x = 1 + a + a*a + a*a*a + a*a*a*a...
+```
+
+最终会是一个积（元组）的无限和，这个结果可被解释为：一个列表，要么是空的，即 `1`；要么是一个单例 `a`；要么是一个序对 `a*a`；要么是一个三元组 `a*a*a`；……以此类推，结果就是一个由 `a` 构成的串。
+
+用符号变量来解方程，这就是代数！因此上面出现的这些数据类型被称为：代数数据类型。
+
+注：类型`a`与类型`b`的积必须包含类型`a`的值与类型`b`的值，这意味着这两种类型都是有值的；两种类型的和则要么包含类型`a`的值，要么包含类型`b`的值，因此只要二者有一个有值即可。逻辑运算`and`与`or`也能形成半环，它们也能映射到类型理论
+
+| Logic | Types |
+| :-: | :- |
+| false | `Void` |
+| true | `()` |
+| `a||b` | `Either a b = Left a | Right b` |
+| `a&&b` | `(a, b)` |
+
+这是更深刻的类比，也是逻辑与类型理论之间的 Curry-Howard 同构的基础
 
 ## Kleisli范畴 / Kleisli Category
 
