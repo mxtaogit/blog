@@ -621,18 +621,20 @@ instance Functor Maybe where
     fmap f (Just x) = Just (f x)
 ```
 
-> F# 中似乎仅能用静态类型解析进行约束，很麻烦很扯淡，此外需要新语言功能release才行（静态扩展允许作为类型解析的证据？）
-
-
-
+> F#不支持类型类，似乎仅能用静态类型解析进行约束，很麻烦很扯淡，此外需要新语言功能release才行（静态扩展允许作为类型解析的证据？）
 
 ### 编程中的函子
 
 函子（这里仅关注编程中的自函子）不仅仅只映射对象（编程中对应物为类型），也映射态射（编程中对应物为函数）。
 
-以Haskell中的`Maybe`为例（F#及Scala中是`Option`），其定义`data Maybe a = Nothing | Just a`就是在将类型`a`映射为`Maybe a`。注意`Maybe`不是一个类型，是个类型构造子，需要提供一个类型参数如`Int`/`Bool`才能使之变成类型`Maybe Int`/`Maybe Bool`。对于任意函数`f :: a -> b`，`Maybe`函子需将之映射成`f' :: Maybe a -> Maybe b`，`f'`的实现为`f' Nothing = Nothing`及`f' (Just x) = Just (f x)`，即函数的参数是`Nothing`，那么返回`Nothing`即可；若这个函数的参数是`Just`，就将`f`应用于`Just`的内容。一般以高阶函数的形式来实现函子的态射映射部分，一般称`fmap`，例如对于`Maybe`函子，其`fmap :: (a -> b) -> (Maybe a -> Maybe b)`。通常说`fmao`“提升”/lift了一个函数，被提升的函数可以作用于`Maybe`层次上的值。由于Currying存在，对于`fmap`的签名`(a -> b) -> Maybe a -> Maybe b`有两个看待视角，一是接受一个`a -> b`类型的函数值，返回一个`Maybe a -> Maybe b`类型的函数值；另一个是接受一个`a -> b`类型的函数值和一个`Maybe a`类型的值，返回一个`Maybe b`类型的值。
+#### `Maybe`函子
+
+以Haskell中的`Maybe`为例，其定义`data Maybe a = Nothing | Just a`就是在将类型`a`映射为`Maybe a`。注意`Maybe`不是一个类型，是个类型构造子，需要提供一个类型参数如`Int`/`Bool`才能使之变成类型`Maybe Int`/`Maybe Bool`。对于任意函数`f :: a -> b`，`Maybe`函子需将之映射成`f' :: Maybe a -> Maybe b`，`f'`的实现为`f' Nothing = Nothing`及`f' (Just x) = Just (f x)`，即函数的参数是`Nothing`，那么返回`Nothing`即可；若这个函数的参数是`Just`，就将`f`应用于`Just`的内容。一般以高阶函数的形式来实现函子的态射映射部分，一般称`fmap`，例如对于`Maybe`函子，其`fmap :: (a -> b) -> (Maybe a -> Maybe b)`。通常说`fmao`“提升”/lift了一个函数，被提升的函数可以作用于`Maybe`层次上的值。由于Currying存在，对于`fmap`的签名`(a -> b) -> Maybe a -> Maybe b`有两个看待视角，一是接受一个`a -> b`类型的函数值，返回一个`Maybe a -> Maybe b`类型的函数值；另一个是接受一个`a -> b`类型的函数值和一个`Maybe a`类型的值，返回一个`Maybe b`类型的值。
 
 为了证明类型构造子 `Maybe` 携同函数 `fmap` 共同形成一个函子，必须证明 `fmap` 能够维持恒等态射以及态射的复合。所证明的东西，叫做“函子定律”。凡是满足函子定律的函子，必定不会破坏范畴的结构。
+
+> F#及Scala中的对应物是`Option`，此外，F#中还有`ValueOption`
+
 
 
 ## Kleisli范畴 / Kleisli Category
