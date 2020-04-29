@@ -627,6 +627,8 @@ instance Functor Maybe where
 
 函子（这里仅关注编程中的自函子）不仅仅只映射对象（编程中对应物为类型），也映射态射（编程中对应物为函数）。
 
+任意被其他类型参数化了的类型，都可视为候选函子。可将函子视为一个抽象的容器
+
 #### `Maybe`函子
 
 以Haskell中的`Maybe`为例，其定义`data Maybe a = Nothing | Just a`就是在将类型`a`映射为`Maybe a`。注意`Maybe`不是一个类型，是个类型构造子，需要提供一个类型参数如`Int`/`Bool`才能使之变成类型`Maybe Int`/`Maybe Bool`。对于任意函数`f :: a -> b`，`Maybe`函子需将之映射成`f' :: Maybe a -> Maybe b`，`f'`的实现为`f' Nothing = Nothing`及`f' (Just x) = Just (f x)`，即函数的参数是`Nothing`，那么返回`Nothing`即可；若这个函数的参数是`Just`，就将`f`应用于`Just`的内容。一般以高阶函数的形式来实现函子的态射映射部分，一般称`fmap`，例如对于`Maybe`函子，其`fmap :: (a -> b) -> (Maybe a -> Maybe b)`。通常说`fmao`“提升”/lift了一个函数，被提升的函数可以作用于`Maybe`层次上的值。由于Currying存在，对于`fmap`的签名`(a -> b) -> Maybe a -> Maybe b`有两个看待视角，一是接受一个`a -> b`类型的函数值，返回一个`Maybe a -> Maybe b`类型的函数值；另一个是接受一个`a -> b`类型的函数值和一个`Maybe a`类型的值，返回一个`Maybe b`类型的值。
@@ -635,7 +637,30 @@ instance Functor Maybe where
 
 > F#及Scala中的对应物是`Option`，此外，F#中还有`ValueOption`
 
+#### `List`函子
 
+```haskell
+data List a = Nil | Cons a (List a)
+
+instance Functor List where
+    fmap _ Nil = Nil
+    fmap f (Cons x t) = Cons (f x) (fmap f t)
+```
+
+`List`是类型构造子，将任意类型`a`映射为类型`List a`。为了证实`List`是一个函子，必须定义一个“提升”函数`fmap :: (a -> b) -> (List a -> List b)`，它接受一个`a -> b`函数，产生一个`List a -> List b`函数。
+
+#### Reader 函子
+
+Haskell中使用箭头类型构造子`(->)`构造函数类型。形如`a -> b`是对其的中缀使用形式，也可写作前缀形式`(->) a b`。该符合的偏应用/部分应用是合法的，例如`(->) a`是一个接受一个类型参数的类型构造子，它需要一个类型 `b` 来产生完整的类型 `a -> b`，它所表示的是，它定义了一族由`a`参数化的类型构造子。
+
+可以将参数类型称为`r`，将返回类型称为`a`。因此类型构造子可以接受任意类型`a`，并将其映射为类型`r -> a`。为了证实这是个函子，需要一个提升函数`fmap :: (a -> b) -> (r -> a) -> (r -> b)`，它可以将函数`a -> b`“提升”为从`r -> a`到`r -> b`的函数，而`r -> a`与`r -> b`就是`(->) r` 这个类型构造子分别作用于`a`与`b`所产生的函数类型。对于给定的函数`f :: a -> b`与`g :: r -> a`，构造一个函数`r -> b`。复合两个函数是唯一途径，也恰恰就是当前所需。因此，`fmap`的实现为`fmap f g = f . g`，或者直接写作`fmap = (.)`
+
+综上，类型构造子`(->) r`与这个`fmap`组合形成的函子便是Reader函子
+
+```haskell
+instance Functor ((->) r) where
+    fmap = (.)
+```
 
 ## Kleisli范畴 / Kleisli Category
 
