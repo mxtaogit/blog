@@ -252,6 +252,10 @@ f.andThen(g)    // 从左向右复合，实例方法调用形式
 
 数学上，幺半群$\langle S, *, e \rangle$是指一个带有可结合二元运算($*: S \times S \rightarrow S$，这隐含了$S$对运算$*$封闭)和单位元$e$的代数结构$S$。“可结合”是指二元运算满足结合律，$\forall a,b,c \in S \Rightarrow \lparen a * b \rparen * c = a * \lparen b * c \rparen$；单位元是指，$\exists e \in S \And \forall a \in S \Rightarrow a * e = e * a$
 
+**Set**伴随笛卡尔积运算便构成幺半群，其幺元是单例；**Set**伴随“不交并/Disjoint Union”运算也构成幺半群，其幺元是空集。
+
+> 个人理解：**Cat**中，对象是范畴，态射是函子。其构成幺半群所需的二元运算即为“二元函子”。
+
 + 作为集合
 
     伴随着一个满足结合律的二元运算和一个特殊“中立”元素的的集合被称为幺半群。对与该二元运算，这个“中立”元素的行为类似一个返回其自身的“unit”。
@@ -712,6 +716,27 @@ class Bifunctor f where
 ![](./img/bifunctor-first.jpg) ![](./img/bifunctor-second.jpg)
 
 当声明`Bifunctor`的一个实例时，可以去实现`bimap`，这样`first`与`second`就不用再实现了；也可以去实现`first`与 `second`，这样就不用再实现`bimap`。当然也可以三个都实现了，但是需要确定它们之间要满足类型类的定义中的那些关系。
+
+### 积于余积二元函子 / Product and Coproduct Bifunctors
+
+由泛构造定义的两个对象的积，即范畴积，是二元函子的一个重要例子。若任意两个对象之间存在积，那么从这些对象到积的映射便具备二元函子性。这通常是正确的，尤其是在Haskell中。
+
+```haskell
+instance Bifunctor (,) where
+    bimap f g (x, y) = (f x, g y)
+```
+
+序对构造子作为最简单的积类型，就是一个`Bifunctor`的实例。`bimap :: (a -> c) -> (b -> d) -> (a, b) -> (c, d)`作用是很清晰的。这个二元函子的用途就是产生的类型序对`(,) a b = (a, b)`
+
+```haskell
+instance Bifunctor Either where
+    bimap f _ (Left x) = Left (f x)
+    bimap _ g (Right y) = Right (g y)
+```
+
+余积作为对偶，若它是作用于范畴内的每一对对象，那么它也是二元函子。以上给出了Haskell中余积二元函子`Either`的例子。
+
+> 个人理解：“二元函子”作为使“范畴的范畴”构成一个幺半群所需的二元运算。
 
 ## Kleisli范畴 / Kleisli Category
 
