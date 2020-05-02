@@ -697,6 +697,8 @@ instance Functor (Const c) where
 
 将二元函子想象为具有两个参数的函数会更直观一些。要证明二元函子是否是函子，不必借助函子定律，只需独立的考察它的参数即可。如果有一个映射，它将两个范畴映射为第三个范畴，只需证明这个映射相对于每个参数（例如，让另一个参数变成常量）具有函子性，那么这个映射就自然是一个二元函子。对于态射，也可以这样来证明二元函子具有函子性。
 
+> 个人理解：“二元函子”作为使“范畴的范畴”构成一个幺半群所需的二元运算。这需要联系幺半群定义去理解。
+
 ```haskell
 class Bifunctor f where
     bimap :: (a -> c) -> (b -> d) -> f a b -> f c d
@@ -736,7 +738,37 @@ instance Bifunctor Either where
 
 余积作为对偶，若它是作用于范畴内的每一对对象，那么它也是二元函子。以上给出了Haskell中余积二元函子`Either`的例子。
 
-> 个人理解：“二元函子”作为使“范畴的范畴”构成一个幺半群所需的二元运算。
+### 具备函子性的代数数据类型 / Functorial Algebraic Data Types
+
+代数数据类型/ADT具备函子性。
+
+目前所见的几个参数化数据类型的例子都是函子（可以为之定义`fmap`）。复杂的数据类型是由简单数据类型构造出来的，尤其是ADT，它是由和与积构造而来。目前以已确定积与和具备函子性及函子的复合，因此只需证实ADT的基本构造块具备函子性，那么就可以确定ADT基本函子性。
+
+首先，有些构造块是不依赖于函子所接受的类型参数的，例如`Maybe`中的`Nothing`或者`List`中的`Nil`。它们等价与`Const`函子（`Const`函子忽略它的类型参数---实际上是忽略第二个类型参数，第一个被保留作为常量）。其次，有些构造块简单的将类型参数封装为自身的一部分，例如`Maybe`中的`Just`，它们等价于恒等函子。恒等函子是**Cat**范畴中的恒等态射，Haskell未对它进行定义，这里给出：
+
+```haskell
+data Identity a = Identity a
+instance Functor Identity where
+    fmap f (Identity x) = Identity (f x)
+```
+
+可将`Identity`视为最简单的容器，它只存储类型`a`的一个（不变）的值。其他的代数数据结构都是使用这两种基本类型的和与积构建而成。
+
+基于此来看待`Maybe`，`data Maybe = Nothing | Just a`。这是两种类型的和，求和是具备函子性的。第一部分`Nothing`可以表示为作用于类型`a`的`Const ()`（`Const`的第一个类型参数是`unit`），而第二部分不过是恒等函子的化名而已。在同构的意义下可以将`Maybe`定义为：`type Maybe a = Either (Const () a) (Identity a)`。`Maybe`是`Const ()`函子与`Identity`函子被二元函子`Either`复合后的结果。(`Const`本身也是一个二元函子，只不过在这里用的是它的偏应用形式)
+
+两个函子的复合后，其结果是一个函子。此外，还需要确定两个函子被一个二元函子复合后如何作用于态射。对于给定的两个态射，可以分别用这两个函子对其进行提升，然后再用二元函子去提升这两个被提升后的态射所构成的序对。
+
+可以在Haskell中定义这种复合 `newtype BiComp bf fu gu a b = BiComp (bf (fu a) (gu b))`，定义二元函子`bf`、两个函子`fu`与`gu`、两个常规类型`a`与`b`，将`a`应用到`fu`，`b`应用到`gu`，然后将`fu a`与`gu b`应用到`bf`。这是对象的复合，在Haskell中也是类型的复合。将`Either`、`Const ()`、`Identity`，`a`和`b`应用到`BiComp`得到的`BiComp (Either (Const () a) (Identity b))`，这就是一个裸奔版本的`Maybe`。
+
+`bf`是二元函子、`fu`与`gu`是函子，那么这个新的数据类型`BiComp`就是`a`与`b`的二元函子。编译器必须知道与 `bf` 匹配的 `bimap` 的定义，以及分别与 `fu` 与 `gu` 匹配的 `fmap` 的定义。在 Haskell 中，这个条件可以预先给出：一个类约束集合后面尾随一个粗箭头：
+
+```haskell
+instance (Bifunctor bf, Functor fu, Functor gu) =>
+  Bifunctor (BiComp bf fu gu) where
+    bimap f1 f2 (BiComp x) = BiComp ((bimap (fmap f1) (fmap f2)) x)
+```
+
+伴随`BiComp`的`bimap`实现是以伴随`bf`的`bimap`以及两个分别伴随`fu`和`gu`的`fmap`给出的。在使用`bimap`时，编译器会自动推断出所有类型，并选择正确的重载函数。`bimap`的定义中，`x` 的类型为`bf (fu a) (gu b)`，有点复杂。外围的`bimap`脱去它的`bf`层，然后两个`fmap`分别脱去它的`fu`与`gu`层。若`f1 :: a -> a'`及`f2 :: b -> b'`，那么，最终结果是类型 `bf (fu a') (gu b')`，因此`bimap`签名可以理解为`bimap :: (fu a -> fu a') -> (gu b -> gu b') -> bf (fu a) (gu b) -> bf (fu a') (gu b')`，这其实与`bimap :: (a -> c) -> (b -> d) -> f a c -> f b d`并无区别。
 
 ## Kleisli范畴 / Kleisli Category
 
