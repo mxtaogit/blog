@@ -772,16 +772,103 @@ instance (Bifunctor bf, Functor fu, Functor gu) =>
 
 ## Kleisli范畴 / Kleisli Category
 
+[Kleisli Categories](https://bartoszmilewski.com/2014/12/23/kleisli-categories/)
+
+[<译> Kleisli 范畴](https://segmentfault.com/a/1190000003898795)
+
+Kleisli 范畴给出了在范畴论中对副作用或非纯函数的进行构造或建模的方法。
+
+从编程语言的视角，可以看作是将类型（目前所见都是返回类型）进行包装（包装的主要目的是加入一些附加信息），然后对包装后的类型的处理。态射就是从任意类型`a`到包装类型`M b`的函数`a -> M b`；态射复合 `(>=>) :: (a -> M b) -> (b -> M c) -> (a -> M c)` 该运算符称为"fish"；该范畴的恒等态射为 `return :: a -> M a`，举例如下：
+
+```haskell
+-- Writer in Haskell
+
+type Writer a = (a, String)     -- 仅是在定义一个类型别名
+
+-- 该范畴中的态射是从任意类型到Writer类型的函数 `a -> Writer b`
+-- 复合的签名如下所示
+(>=>) :: (a -> Writer b) -> (b -> Writer c) -> (a -> Writer c)
+-- 复合操作符的实现
+m1 >=> m2 = \x ->
+    let (y, s1) = m1 x
+        (z, s2) = m2 y
+    in  (z, s1 ++ s2)
+
+-- 该范畴中的恒等态射
+return :: a -> Writer a
+return x = (x, "")
+
+-- ----------------------
+-- 对以上进行应用
+-- 定义两个操作
+upCase :: String -> Writer String       -- 将字符转换成大写，并带上附加信息
+upCase = (map toUpper s, "upCase")
+toWords :: String -> Writer [String]    -- 将字符串切成多个单词，并带上附加信息
+toWords = (words s, "toWords")
+
+toUpThenToWords :: String -> Writer [String]    -- 将以上两个操作复合起来
+toUpThenToWords = upCase >=> toWords
+```
+
+```fsharp
+// Writer in F#
+
+type Writer<'a> = 'a * string   // 仅定义了类型别名
+
+let (>=>) m1 m2 = fun x ->      // 这里是推断为`m1:('a -> 'b * int) -> m2:('b -> 'c * int) -> x:'a -> 'c * int`
+    let Writer (y, s1) = m1 x
+    let Writer (z, s2) = m2 y
+    (z, s1 + s2)
+
+
+/// -----------------------------------
+
+// -- 出现了自动泛化失效现象
+type Writer<'a> = 'a * string
+
+// let (>=>=)<'a, 'b, 'c> (m1: 'a -> Writer<'b>) (m2: 'b -> Writer<'c>): ('a -> Writer<'c>) = fun x -> 
+
+//     let (Writer (y, s1)) = Writer t
+//     let (Writer (z, s2)) = m2 y
+//     Writer (z, s1 + s2)
+
+let (>=>) m1 m2 = fun x ->
+    let (y, s1) = m1 x
+    let (z, s2) = m2 y
+    (z, s1 + s2)
+
+let return_ x = (x, "")
+
+let toUpper (x: string) =  Writer (x.ToUpper(), "toUpper")
+let toWords (x: string) = Writer ([x], "toList")
+
+// let a = toUpper >=> toWords
+
+let t1 x = (x |> string, 1.2)
+let t2 x = (String.length x, 1.3)
+
+let b = t1 >=> t2
+
+
+
+
+```
+
+
+### `Writer`范畴
+
+
+
+
+```cpp
+// de 
+```
+
+
 <!-- todo 数学定义没看懂，直观定义尚未总结，先给出 -->
 
 将之理解成对副作用进行包装？
 
 Haskell中的 Writer 范畴 ??
 
-从编程语言的视角，可以看作是将类型进行包装（包装的主要目的是加入一些附加信息），然后对包装后的类型进行处理
 
-态射就是从任意类型`a`到包装类型`M b`的函数，`a -> M b`
-
-态射复合 `(>=>) :: (a -> M b) -> (b -> M c) -> (a -> M c)` 该运算符称为"fish"
-
-该范畴的恒等态射为 `return :: a -> M a` 
