@@ -810,48 +810,29 @@ toUpThenToWords :: String -> Writer [String]    -- 将以上两个操作复合�
 toUpThenToWords = upCase >=> toWords
 ```
 
+
+
 ```fsharp
 // Writer in F#
 
 type Writer<'a> = 'a * string   // 仅定义了类型别名
 
-let (>=>) m1 m2 = fun x ->      // 这里是推断为`m1:('a -> 'b * int) -> m2:('b -> 'c * int) -> x:'a -> 'c * int`
-    let Writer (y, s1) = m1 x
-    let Writer (z, s2) = m2 y
-    (z, s1 + s2)
-
-
-/// -----------------------------------
-
-// -- 出现了自动泛化失效现象
-type Writer<'a> = 'a * string
-
-// let (>=>=)<'a, 'b, 'c> (m1: 'a -> Writer<'b>) (m2: 'b -> Writer<'c>): ('a -> Writer<'c>) = fun x -> 
-
-//     let (Writer (y, s1)) = Writer t
-//     let (Writer (z, s2)) = m2 y
-//     Writer (z, s1 + s2)
-
-let (>=>) m1 m2 = fun x ->
+let (>=>) m1 m2 = fun x ->      // 这里推断为`m1:('a -> 'b * int) -> m2:('b -> 'c * int) -> x:'a -> 'c * int`
     let (y, s1) = m1 x
     let (z, s2) = m2 y
     (z, s1 + s2)
 
-let return_ x = (x, "")
+let toUpper str = Writer (str.ToUpper(), "toUpper") // 实际上没必要带上`Writer`
+let toWords str = Writer (str.ToWords(), "toWords")
 
-let toUpper (x: string) =  Writer (x.ToUpper(), "toUpper")
-let toWords (x: string) = Writer ([x], "toList")
+let proc = toUpper >=> toWords
 
-// let a = toUpper >=> toWords
-
-let t1 x = (x |> string, 1.2)
-let t2 x = (String.length x, 1.3)
-
-let b = t1 >=> t2
-
-
-
-
+// 可以将`Writer`生命为单实例的联合
+type Writer<'a> = Writer of 'a * string
+let (>=>) m1 m2 = fun x ->
+    let (Writer (y, s1)) = m1 x
+    let (Writer (z, s2)) = m2 y
+    Writer (z, s1 + s2)
 ```
 
 
