@@ -808,6 +808,45 @@ data Maybe a = Nothing | Just a
 
 代数数据结构的规律性不仅适用于`Functor`的自动继承，也适合其它的类型类，例如之前提到的`Eq`类型类。也可以要求Haskell编译器自动继承自定义的类型类，但是技术上要难一点。不过思想是相同的：为类型类描述基本构造块、求和以及求积的行为，然后让编译器来描述其他部分。
 
+### 协变与逆变函子 / Covariant and Contravariant Functor
+
+回顾Reader函子，Reader函子`(->) r`是“函数箭头”类型构造子的的偏应用（箭头`->`本身就是一个类型构造子，它接受两个类型参数）。为之取一个类型别名，并将之声明为`Functor`实例
+
+```haskell
+type Reader r a = r -> a
+
+instance Functor (Reader r) where
+    fmap f g = f . g
+```
+
+函数类型构造子接受两个类型参数，这一点与序对或`Either`类型构造子相似。序对与`Either`对于它们所接受的参数都具备函子性，因此它们二元函子。函数类型构造子是否是个二元函子？如果是，那么它必须对于两个类型参数都具备函子性，以上定义只给出了`(->)`对于它的第二个类型参数具备函子性，现在尝试证明对于第一个参数具备函子性。
+
+需要固定第二个参数，使第一个参数可变，因此`type Op r a = a -> r`。此时对于`Op r`，返回类型`r`固定了下来，只让参数类型是`a`可变的。与它相匹配的`fmap`的类型签名如下：`fmap :: (a -> b) -> (a -> r) -> (b -> r)`。从`fmap`的类型签名看出，只凭借`(a -> b)`和`(a -> r)`类型的参数，无法构造出`(b -> r)`。但是如果存在某种方式能够反转`a -> b`，使之变成`b -> a`，那么目标构造便能成立。虽然不能随便反转一个函数的参数，但是在对偶范畴中可以这样做。
+
+对于每个范畴$C$都存在一个对偶范畴$C^{OP}$，后者包含的对象与前者相同，后者包含的态射与前者一致但方向相反。假设范畴$C^{OP}$与另一个范畴$D$之间存在一个函子$F :: C^{OP} \rightarrow D$，这个函子将$C^{OP}$中的一个态射$f^{OP} :: a \rightarrow b$映射为$D$中的一个态射$F f^{OP} :: F a \rightarrow F b$。该态射$f^{OP}$与范畴$C$中的态射$f :: b \rightarrow a$相对应，两者方向是相反的。其形状如下图所示：
+
+![](./img/contravariant.jpg)
+
+现在$F$是一个常规的函子，基于此定义一个映射$G$，该映射不是熟悉的普通函子。这个映射从范畴$C$到范畴$D$，映射对象时功能与$F$相同，映射态射时会先将态射方向反转，然后再使用$F$的功能。$G$接受$C$中的一个态射$f :: b \rightarrow a$，将其映射为相反的态射$f^{OP} :: a \rightarrow b$，然后将函子$F$作用于这个被反转的态射$f^{OP}$，最终得到$F f^{OP} :: F a \rightarrow F b$。$F a$与$G a$相同，$F b$与$G b$相同，因此$G f :: \lparen b \rightarrow a \rparen \rightarrow \lparen G a \rightarrow G b \rparen$。这种反转了态射方向的映射便称为“逆变函子”/Contravariant Functor。注意逆变函子只是来自对偶范畴的一个“常规函子”。之前所述的`Maybe`及`List`等都是“常规函子”，它们称为“协变函子”/Covariant Funcotr。
+
+```haskell
+-- Haskell中逆变函子类型类的定义 （实际是逆变自函子）
+class Contravariant f where
+    contramap :: (b -> a) -> f a -> f b
+
+-- `Op`是它的一个实例
+instance Contravariant (Op r) where
+    -- contramap :: (b -> a) -> (a -> r) -> (b -> r)
+    contramap f g = g . f  -- 函数 `f` 插入到了 `g` 之前
+
+-- contramap 只是个颠倒了参数顺序的复合运算符
+-- flip 函数可以用于颠倒参数顺序
+flip :: (a -> b -> c) -> (b -> a -> c)
+flip f y x = f x y
+-- 基于此
+contramap = flip (.)
+```
+
 ## Kleisli范畴 / Kleisli Category
 
 [Kleisli Categories](https://bartoszmilewski.com/2014/12/23/kleisli-categories/)
