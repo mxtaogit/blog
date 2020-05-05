@@ -847,6 +847,33 @@ flip f y x = f x y
 contramap = flip (.)
 ```
 
+### 副函子 / Profunctor
+
+函数箭头运算符对于它的第一个参数具有逆变函子性，对于第二个参数具有协变函子性，在**集合**范畴**Set**中，这被称为**副函子**/Profunctor。由于一个逆变函子相当于其对偶范畴中的协变函子，因此可以这样定义一个副函子：$C^{OP} \times D \rightarrow Set$。
+
+由于Haskell的类型系统可看作集合范畴，因此可以在其中定义副函子类型类。
+
+```haskell
+-- 从 Data.Profunctor 库中抽取出来的类型类
+class Profunctor p where
+    dimap :: (b -> a) -> (c -> d) -> p a c -> p b d
+    dimap f g = lmap f . rmap g
+    lmap :: (b -> a) -> p a x -> p b x
+    lmap f = dimap f id
+    rmap :: (c -> d) -> p x c -> p x d
+    rmap = dimap id
+-- 三个函数只是默认的实现。类似Bifunctor，当声明Profunctor实例时，要么实现dimap，要么实现lmap和rmap
+
+-- 现在声明函数箭头运算符是Profunctor的实例
+instance Profunctor (->) where
+    dimap :: (b -> a) -> (c -> d) -> (a -> c) -> (b -> d)
+    dimap ba cd ac = cd . ac . ba
+    lmap = flip (.)
+    rmap = (.)
+```
+
+![](./img/bimap.jpg)
+
 ## Kleisli范畴 / Kleisli Category
 
 [Kleisli Categories](https://bartoszmilewski.com/2014/12/23/kleisli-categories/)
