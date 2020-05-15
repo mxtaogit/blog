@@ -1167,3 +1167,25 @@ instance Functor (Reader e) where
 
 对于每种类型`e`，都可以定义从`Reader e`到任何其他函子`f`的自然变换族，这个家族的成员总是与`f e`的元素一一对应（Yoneda引理）。考虑仅有一个值`()`的类型`unit`，函子`Reader ()`接受任意类型`a`，然后形成函数类型`() -> a`，这些函数可以从集合`a`中提取一个元素，函数的数量与`a`中的元素一样多。考虑该函子到`Maybe`函子的自然变换`alpha :: Reader () a -> Maybe a`，这样的自然变换只有`dumb`（`dumb (Reader _) = Nothing`）和`obivous`（`obvoius = (Reader g) = Just (g ())`）。实际上按照 Yoneda 引理的说法，这与`Maybe ()`类型的两个元素相符，即 `Nothing` 与 `Just ()`（注意该说法并不严谨）
 
+## 超自然性 / Beyond Naturality
+
+两个函子之间的参数化多态函数（包括`Const`函子这种边界情况）必定是自然变换。因为所有的标准代数数据类型都是函子，在这些类型之间的任何一个多态函数都是自然变换。函数类型的返回类型具备函子性，可以运用这一特点来构造函子（例如`Reader`函子），并为这些函子构造自然变换，这些自然变换是更高阶的函数。
+
+但是，函数类型的参数类型具备的是逆变函子性（逆变函子就是对偶范畴中的协变函子）。在范畴意义上，两个逆变函子之间的多态函数依然可视为自然变换，当然它们只能作用于Haskell类型范畴的对偶范畴里的函子。
+
+```haskell
+-- 逆变函子`Op`对于`a`具有逆变性
+newtype Op r a = Op (a -> r)
+instance Contravariant (Op r) where
+    -- contramap :: (b -> a) -> (Op r a -> Op r b)
+    -- contramap :: (b -> a) -> (a -> r) -> (b -> r)
+    contramap f (Op g) = Op (g . f)
+
+-- 一个从`Op Bool`到`Op String`的函数
+predToStr (Op f) = Op (\x -> if f x then "T" else "F")
+-- 函子`Op Bool`和`Op String`不具备协变性，它们不是**Hask**范畴中的自然变换。但它们具备逆变性，因此满足“相反的”自然性条件：
+contramap f . predToStr = predToStr . contramap f
+-- 注：函数`f`必须走与`fmap`作用下方向相反的方向
+```
+
+存在不是函子的类型构造子，例如`a -> a`。类型参数`a`出现在负（逆变）位与正（协变）位上，对于这种类型，`fmap`或`contramap`都无法实现。符合函数签名`(a -> a) -> f a`（其中`f`是任意函子）的函数不是自然变换。存在着一种广义的自然变换，叫作双自然变换，它们能够处理这些情况。
