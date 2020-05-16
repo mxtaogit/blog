@@ -1192,4 +1192,14 @@ contramap f . predToStr = predToStr . contramap f
 
 ## 函子范畴 / Functor Category
 
-对于每对范畴$C$和范畴$D$，存在且仅存在一个函子范畴，在这个范畴里，对象是从$C$到$D$的函子，态射是函子间的自然变换。
+对于每对范畴$C$和范畴$D$，存在且仅存在一个函子范畴，在这个范畴里，对象是从$C$到$D$的函子，态射是函子间的自然变换。对于每个函子$F$，存在一个恒等自然变换$1_F$，它的分量恒等态射$id_{F a} :: F a -> F a$；已知自然变换的分量是态射，自然变换的复合就是各分量态射的复合，态射复合遵循结合律，因此自然变换复合也遵循结合律。
+
+例如，现有函子$F$到函子$G$的自然变换$\alpha$和函子$G$到函子$H$的自然变换$\beta$，它们在对象$a$上的分量是某个态射$\alpha_a :: F a \rightarrow G a$和$\beta_a :: G a \rightarrow H a$，这两个态射是可以复合的，复合结果是另一个态射$\beta_a \circ \alpha_a :: F a \rightarrow H a$，可以将这个结果作为自然变换$\beta \circ \alpha$（自然变换$\alpha$和$\beta$的复合，复合顺序先$\alpha$后$\beta$）在$a$上的分量，即$(\beta \circ \alpha)_a = \beta_a \circ \alpha_a$(如下图所示)
+
+![](./img/5_vertical.jpg)
+
+复合后的自然变换依然满足自然性条件$H f \circ (\beta \circ \alpha)_a = (\beta \circ \alpha)_b \circ H f$，如下图所示
+
+![](./img/6_verticalnaturality.jpg)
+
+
