@@ -1219,3 +1219,17 @@ contramap f . predToStr = predToStr . contramap f
 **2-范畴**是一个广义的范畴，其中具备对象和态射（准确讲，应该是1-态射），还有2-态射（即态射之间的态射）。
 
 按照定义，**Cat**里任意Hom-集都是函子集合，其中两对象之间的函子形成一个函子范畴，函子范畴中以自然变换作为态射。在**Cat**里，对象是（小）范畴，函子是对象间的态射，自然变换就是态射间的态射。这个更“丰满”的结构便是**2-范畴**的一个例子。
+
+用函子范畴$D^C$的形式来代替范畴$C$和$D$之间的Hom-集。现有常规的函子符合：来自$D^C$的函子$F$与来自$E^D$的函子$G$复合，可以得到来自$E^C$的函子$G \circ F$。此外，在每个Hom-范畴内部，也存在着复合，这就是函子之间的自然变换或2-态射的竖向复合，如下图所示。
+
+![](./img/8_cat-2-cat.jpg)
+
+要分析清楚这两种复合之间关系，首先从**Cat**里面选两个函子（或者说1-态射）$F :: C \rightarrow D$和$G :: D \rightarrow E$，以及它们的复合$G \circ F :: C \rightarrow E$，此外还有两个自然变换$\alpha :: F \rightarrow F'$和$\beta :: G \rightarrow G'$，整体关系如下图。显然，不可能对两个自然变换应用竖向复合，因为$\alpha$的终点与$\beta$起点不重合（实际上因为它们属于两个函子范畴$D^C$和$E^D$）。
+
+![](./img/10_horizontal.jpg)
+
+基于以上条件，很明显可以复合函子$F'$和$G'$得到$G' \circ F'$。现在尝试基于已有的$\alpha$和$\beta$顶一个从$G \circ F$到$G' \circ F'$的自然变换。首先给出简图如下
+
+![](./img/9_horizontal.jpg)
+
+从范畴$C$中的一个对象$a$开始，它分裂为$D$中的两个对象$F' a$和$F' a$，此外有一个态射$\alpha_a :: F a \rightarrow F' a$连接这两个对象，这个态射是$\alpha$的分量；在从$D$到$E$的时候，两个对象分裂成四个对象$G (F a)$、$G' (F a)$、$G (F' a)$和$G' (F' a)$，还有四个态射形成了一个方格，其中有两个是$\beta$的分量：$\beta_{F a} :: G (F a) \rightarrow G' (F a)$和$\beta_{F' a} :: G (F' a) \rightarrow G' (F' a)$，另两个是$\alpha_a$在两个函子下的象（函子提升了的态射）：$G \alpha_a :: G (F a) \rightarrow G (F' a)$和$G' \alpha_a :: G' (F a) \rightarrow G' (F' a)$。目标是从中找出$G (F a)$到$G' (F' a)$的态射，找到了$G' \alpha_a \circ \beta_{F a}$和$\beta_{F' a} \circ G \alpha_a$，这两者是相等的。这四个态射形成的方格对于$\beta$而言具备自然性。将这个自然变换称为$\alpha$与$\beta$的横向复合：$\beta \circ \alpha :: G \circ F \rightarrow G' \circ F'$
