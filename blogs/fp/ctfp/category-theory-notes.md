@@ -1233,3 +1233,5 @@ contramap f . predToStr = predToStr . contramap f
 ![](./img/9_horizontal.jpg)
 
 从范畴$C$中的一个对象$a$开始，它分裂为$D$中的两个对象$F' a$和$F' a$，此外有一个态射$\alpha_a :: F a \rightarrow F' a$连接这两个对象，这个态射是$\alpha$的分量；在从$D$到$E$的时候，两个对象分裂成四个对象$G (F a)$、$G' (F a)$、$G (F' a)$和$G' (F' a)$，还有四个态射形成了一个方格，其中有两个是$\beta$的分量：$\beta_{F a} :: G (F a) \rightarrow G' (F a)$和$\beta_{F' a} :: G (F' a) \rightarrow G' (F' a)$，另两个是$\alpha_a$在两个函子下的象（函子提升了的态射）：$G \alpha_a :: G (F a) \rightarrow G (F' a)$和$G' \alpha_a :: G' (F a) \rightarrow G' (F' a)$。目标是从中找出$G (F a)$到$G' (F' a)$的态射，找到了$G' \alpha_a \circ \beta_{F a}$和$\beta_{F' a} \circ G \alpha_a$，这两者是相等的。这四个态射形成的方格对于$\beta$而言具备自然性。将这个自然变换称为$\alpha$与$\beta$的横向复合：$\beta \circ \alpha :: G \circ F \rightarrow G' \circ F'$
+
+<!-- todo: update 2-categories -->
