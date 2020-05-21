@@ -1194,17 +1194,17 @@ contramap f . predToStr = predToStr . contramap f
 
 对于每对范畴$C$和范畴$D$，存在且仅存在一个函子范畴，在这个范畴里，对象是从$C$到$D$的函子，态射是函子间的自然变换。对于每个函子$F$，存在一个恒等自然变换$1_F$，它的分量恒等态射$id_{F a} :: F a -> F a$；已知自然变换的分量是态射，自然变换的复合就是各分量态射的复合，态射复合遵循结合律，因此自然变换复合也遵循结合律。
 
-例如，现有函子$F$到函子$G$的自然变换$\alpha$和函子$G$到函子$H$的自然变换$\beta$，它们在对象$a$上的分量是某个态射$\alpha_a :: F a \rightarrow G a$和$\beta_a :: G a \rightarrow H a$，这两个态射是可以复合的，复合结果是另一个态射$\beta_a \circ \alpha_a :: F a \rightarrow H a$，可以将这个结果作为自然变换$\beta \circ \alpha$（自然变换$\alpha$和$\beta$的复合，复合顺序先$\alpha$后$\beta$）在$a$上的分量，即$(\beta \circ \alpha)_a = \beta_a \circ \alpha_a$(如下图所示)
+例如，现有函子$F$到函子$G$的自然变换$\alpha$和函子$G$到函子$H$的自然变换$\beta$，它们在对象$a$上的分量是某个态射$\alpha_a :: F a \rightarrow G a$和$\beta_a :: G a \rightarrow H a$，这两个态射是可以复合的，复合结果是另一个态射$\beta_a \circ \alpha_a :: F a \rightarrow H a$，可以将这个结果作为自然变换$\beta \cdot \alpha$（自然变换$\alpha$和$\beta$的复合，复合顺序先$\alpha$后$\beta$）在$a$上的分量，即$(\beta \cdot \alpha)_a = \beta_a \circ \alpha_a$(如下图所示)
 
 ![](./img/5_vertical.jpg)
 
-复合后的自然变换依然满足自然性条件$H f \circ (\beta \circ \alpha)_a = (\beta \circ \alpha)_b \circ H f$，如下图所示
+复合后的自然变换依然满足自然性条件$H f \circ (\beta \cdot \alpha)_a = (\beta \cdot \alpha)_b \circ H f$，如下图所示
 
 ![](./img/6_verticalnaturality.jpg)
 
 > 关于自然变换复合的记法
 >
-> 以上的给出的示意图里面，函子是从上向下堆砌的，这种称为**竖向复合**。此外还有**横向复合**
+> 以上的给出的示意图里面，函子是从上向下堆砌的，这种称为**竖向复合**，用小圆点$\cdot$来表示。此外还有**横向复合**，用小圆圈$\circ$表示，有时可能是星号。
 >
 > ![](./img/6a_vertical.jpg)
 >
@@ -1228,10 +1228,14 @@ contramap f . predToStr = predToStr . contramap f
 
 ![](./img/10_horizontal.jpg)
 
-基于以上条件，很明显可以复合函子$F'$和$G'$得到$G' \circ F'$。现在尝试基于已有的$\alpha$和$\beta$顶一个从$G \circ F$到$G' \circ F'$的自然变换。首先给出简图如下
+基于以上条件，很明显可以复合函子$F'$和$G'$得到$G' \circ F'$。现在尝试基于已有的$\alpha$和$\beta$定义一个从$G \circ F$到$G' \circ F'$的自然变换。首先给出简图如下
 
 ![](./img/9_horizontal.jpg)
 
 从范畴$C$中的一个对象$a$开始，它分裂为$D$中的两个对象$F' a$和$F' a$，此外有一个态射$\alpha_a :: F a \rightarrow F' a$连接这两个对象，这个态射是$\alpha$的分量；在从$D$到$E$的时候，两个对象分裂成四个对象$G (F a)$、$G' (F a)$、$G (F' a)$和$G' (F' a)$，还有四个态射形成了一个方格，其中有两个是$\beta$的分量：$\beta_{F a} :: G (F a) \rightarrow G' (F a)$和$\beta_{F' a} :: G (F' a) \rightarrow G' (F' a)$，另两个是$\alpha_a$在两个函子下的象（函子提升了的态射）：$G \alpha_a :: G (F a) \rightarrow G (F' a)$和$G' \alpha_a :: G' (F a) \rightarrow G' (F' a)$。目标是从中找出$G (F a)$到$G' (F' a)$的态射，找到了$G' \alpha_a \circ \beta_{F a}$和$\beta_{F' a} \circ G \alpha_a$，这两者是相等的。这四个态射形成的方格对于$\beta$而言具备自然性。将这个自然变换称为$\alpha$与$\beta$的横向复合：$\beta \circ \alpha :: G \circ F \rightarrow G' \circ F'$
 
-<!-- todo: update 2-categories -->
+复合的存在依赖于范畴。自然变换的纵向符合存在于函子范畴，现找出横向复合存在的范畴。解决这个问题需要从侧面来看**Cat**，不要将自然变换看成函子之间的态射，而是将它们看成范畴之间的态射。一个自然变换位于两个范畴之间，而这两个范畴原本是由这个自然变换所变换的函子连接的，可以认为这个自然变换连接着这两个范畴。从**Cat**里面选择两个对象，即范畴$C$和$D$，两对象之间存在着由自然变换构成的集合，这些自然变换来往于连接$C$和$D$的函子之间，将这些自然变换视为从$C$到$D$的态射。同理，也有一些自然变换是来自于连接范畴$D$和$E$的函子，将它们视为从$D$到$E$的态射。于是，横向复合就是这种态射的复合。存在从范畴$C$到范畴$C$的恒等态射，它是范畴$C$上恒等函子自身的恒等自然变换。注：横向复合的恒等也是竖向复合的恒等，但反过来不是。
+
+横向复合和纵向复合满足交换律：$(\beta' \cdot \alpha') \circ (\beta \cdot \alpha) = (\beta' \circ \beta) \cdot (\alpha' \circ \alpha)$。
+
+此后可能会看到更多记法。在从侧面看待**Cat**的视角里，从一个对象到另一个对象有两种办法：使用函子或自然变换。此外，可以将函子态射解读为一种特殊的自然变换：恒等自然变换作用于这个函子。基于这个解读，$F \circ \alpha$便是合理的，其中$F$是从$D$到$E$的函子、$\alpha$是从$C$到$D$的自然变换，函子和自然变换当然无法复合，这个记法解读为恒等自然变换$1_F$与$\alpha$的横向复合（复合顺序先$\alpha$后$1_F$）。
