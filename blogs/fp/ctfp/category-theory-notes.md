@@ -1239,3 +1239,27 @@ contramap f . predToStr = predToStr . contramap f
 横向复合和纵向复合满足交换律：$(\beta' \cdot \alpha') \circ (\beta \cdot \alpha) = (\beta' \circ \beta) \cdot (\alpha' \circ \alpha)$。
 
 此后可能会看到更多记法。在从侧面看待**Cat**的视角里，从一个对象到另一个对象有两种办法：使用函子或自然变换。此外，可以将函子态射解读为一种特殊的自然变换：恒等自然变换作用于这个函子。基于这个解读，$F \circ \alpha$便是合理的，其中$F$是从$D$到$E$的函子、$\alpha$是从$C$到$D$的自然变换，函子和自然变换当然无法复合，这个记法解读为恒等自然变换$1_F$与$\alpha$的横向复合（复合顺序先$\alpha$后$1_F$）。
+
+## Monad / 单子
+
+```haskell
+class Monod m where
+    (>>=) :: m a -> (a -> m b) -> m b
+    return :: a -> m a
+
+-- 基于bind/>>=可以很容易定义kelisli范畴中的复合>=>
+(>=>) :: (a -> m b) -> (b -> m c) -> (a -> m c)
+(>=>) f g = \a -> let mb = f a
+                  in mb >>= g
+
+-- bind可以定义fmap，fmap可以借助join定义bind，m必定是个函子
+
+--
+class Functor m => Monad m where
+    join :: m (m a) -> m a
+    return :: a -> m a
+
+-- so
+(>>=) ma f = join (fmap f ma)
+
+```
