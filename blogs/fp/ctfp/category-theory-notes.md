@@ -1243,23 +1243,31 @@ contramap f . predToStr = predToStr . contramap f
 ## Monad / 单子
 
 ```haskell
+-- Kleisli范畴中的恒等为`return :: a -> m a`、复合为`>=> :: (a -> m b) -> (b -> m c) -> (a -> m c)`
+-- 尝试实现这一复合
+(>=>) :: (a -> m b) -> (b -> m c) -> (a -> m c)
+(>=>) f g = \a -> let mb = f a      -- 拿到一个`a`，也只能将之应用到`f`，得到`mb`
+                  in mb ??? g       -- 需要`mb ??? g`，从而得到`mc`，`???`需要具备把“函子容器”打开的能力
+
+--- ???处一般称作bind，用`>>=`表示，其定义
+(>>=) :: m a -> (a -> m b) -> m b
+
+-- 因此，一个实现了bind和return的即为一个单子m
 class Monod m where
     (>>=) :: m a -> (a -> m b) -> m b
     return :: a -> m a
 
--- 基于bind/>>=可以很容易定义kelisli范畴中的复合>=>
-(>=>) :: (a -> m b) -> (b -> m c) -> (a -> m c)
-(>=>) f g = \a -> let mb = f a
-                  in mb >>= g
+-- 单子m是函子，可以借助函子已有的工具来定义`>>=`
+ma >>= f = ??? (fmap f ma)
+-- `fmap f ma`得到了`m (m b)`类型的值，需要有个更基本的工具将“两层函子容器”解除一层，这一工具是`join`
+join :: m (m a) -> m a
 
--- bind可以定义fmap，fmap可以借助join定义bind，m必定是个函子
-
---
+-- 因此，简单扩展一下函子，添加几个相当基本的函数，即可得到一个单子
 class Functor m => Monad m where
     join :: m (m a) -> m a
     return :: a -> m a
-
--- so
-(>>=) ma f = join (fmap f ma)
-
 ```
+
+## ！！！
+
++ [ ] Monad Section Fix
