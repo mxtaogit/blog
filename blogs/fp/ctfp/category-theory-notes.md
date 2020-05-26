@@ -1268,6 +1268,12 @@ class Functor m => Monad m where
     return :: a -> m a
 ```
 
+| Monad | Category Theory |
+| - | - |
+| `m` | $T$ |
+| `join` | $\mu$ |
+| `return` | $\eta$ |
+
 ## ！！！
 
 + [ ] Monad Section Fix
