@@ -1268,11 +1268,16 @@ class Functor m => Monad m where
     return :: a -> m a
 ```
 
-| Monad | Category Theory |
-| - | - |
+以上几个概念在范畴论中的表示如下所示
+
+| Haskell | Math | |
+| :- | :-: | :- |
 | `m` | $T$ |
-| `join` | $\mu$ |
-| `return` | $\eta$ |
+| `join` | $\mu$ | $\mu :: T^2 \rightarrow T$ |
+| `return` | $\eta$ | $\eta :: Id \rightarrow T$ |
+
+在范畴论中，自函子$T$和两个自然变换$\mu$和$\eta$能够成一个单子，此外要求自然变换遵守结合律和恒等法则。
+
 
 ## ！！！
 
