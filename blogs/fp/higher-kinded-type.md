@@ -12,6 +12,8 @@
 [Higher-rank and higher-kinded types](https://www.stephanboyer.com/post/115/higher-rank-and-higher-kinded-types)
 
 
+[Simulate higher-kinded polymorphism](https://github.com/fsharp/fslang-suggestions/issues/175)
+
 ---
 
 [Scala类型系统——高级类类型(higher-kinded types)](https://my.oschina.net/Barudisshu/blog/690595)
