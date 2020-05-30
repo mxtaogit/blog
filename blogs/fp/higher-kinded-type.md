@@ -1,3 +1,8 @@
+---
+
+tags: ['Language Feature']
+---
+
 # Higher Kinded Type - 高级类类型
 
 ---
