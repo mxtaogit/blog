@@ -46,11 +46,54 @@ Haskell的Kind系统中，$K = * | K \rightarrow K$，它描述了两条规则�
 
 一个类型构造器接受一个或多个类型参数，当接受了足够的类型参数之后便产生了一个新类型(类型构造支持基于currying的偏应用)。例如，`[]`/`List`接受一个类型参数，这个类型参数指出了内部元素的类型，因此`[Int]`/`[Bool]`/`[[Int]]`都是对于`[]`的正确应用，`[]`的kind是`* -> *`，`Int`/`Bool`/`[Int]`的kind是`*`，将之应用到`[]`便得到`[Int]`/`[Bool]`/`[[Int]]`，这些结果类型的kind是`*`。同理，二元组类型构造器`(,)`的kind是`* -> * -> *`，三元组类型构造器`(,,)`的kind是`* -> * -> * -> *`
 
+## Higher Kinded Type in Programming
+
+### Haskell
+
+```haskell
+class Functor f where
+    fmap :: a -> b -> f a -> f b
+
+-- data Maybe a = Nothing | Just a
+instance Functor Maybe where
+    fmap _ Nothing = Nothing
+    fmap f (Just x) = Just (f x)
+
+-- data List a = Nil | Cons a (List a)
+instance Functor List where
+    fmap _ Nil = Nil
+    fmap f (Cons x xs) = Cons (f x) (fmap f xs)
+```
+
+
+```scala
+trait Functor[F[_]] {
+    def fmap[A, B](f: A => B)(fa: F[A]): F[B]
+}
+
+
+val fOption = new Functor[Option] {
+    def fmap[A, B](f: A => B)(a: Option[A]): Option[B] = {
+        a match {
+            case None => None
+            case Some(x) => Some(f(x))
+        }
+    }
+}
+
+val fList = new Functor[List] {
+    def fmap[A, B](f: A => B)(list: List[A]): List[B] = {
+        list match {
+            case Nil => Nil
+            case head :: tail => f(head) :: fmap(f)(tail)
+        }
+    }
+}
+```
+
 ---
 
 ## 相关链接
-
-维基百科 [Kind (type theory)](https://en.wikipedia.org/wiki/Kind_(type_theory))
 
 Scala语言对此的设计：[Generics of a Higher Kind](https://adriaanm.github.com/files/higher.pdf)
 
@@ -58,12 +101,9 @@ Scala语言对此的设计：[Generics of a Higher Kind](https://adriaanm.github
 
 [Higher Kinded Types in F#](https://robkuz.github.io/Higher-kinded-types-in-fsharp-Intro-Part-I/)
 
-
 [Higher-rank and higher-kinded types](https://www.stephanboyer.com/post/115/higher-rank-and-higher-kinded-types)
 
 关于对F#添加该功能的讨论：
-
-[Add support for higher-rank types](https://github.com/fsharp/fslang-suggestions/issues/567)
 
 [Simulate higher-kinded polymorphism](https://github.com/fsharp/fslang-suggestions/issues/175)
 
