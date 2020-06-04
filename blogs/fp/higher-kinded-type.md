@@ -63,9 +63,6 @@ trait List[T] extends Iterable[T] {
     def filter(p: T => Boolean): List[T] = ???
     override def remove(p: T => Boolean): List[T] = filter(x => !p(x))
 }
-```
-
-```scala
 // ---------- Version 2 ----------
 trait Iterable[T, Container[_]] {
     def filter(p: T => Boolean): Container[T]
@@ -74,6 +71,8 @@ trait Iterable[T, Container[_]] {
 
 trait List[T] extends Iterable[T, List]
 ```
+
+以上代码简单演示了引入HKT带来的收益(代码样例来自[Generics of a Higher Kind](https://adriaanm.github.com/files/higher.pdf))。
 
 ## HKT in Programming
 
