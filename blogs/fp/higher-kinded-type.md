@@ -1,6 +1,5 @@
 ---
-
-tags: ['Language Feature']
+tags: ['Language Feature', 'Higher Kinded Type', 'Scala', 'Haskell']
 ---
 
 # Higher Kinded Type - 高阶类类型
@@ -46,7 +45,7 @@ Haskell的Kind系统中，$K = * | K \rightarrow K$，它描述了两条规则�
 
 一个类型构造器接受一个或多个类型参数，当接受了足够的类型参数之后便产生了一个新类型(类型构造支持基于currying的偏应用)。例如，`[]`/`List`接受一个类型参数，这个类型参数指出了内部元素的类型，因此`[Int]`/`[Bool]`/`[[Int]]`都是对于`[]`的正确应用，`[]`的kind是`* -> *`，`Int`/`Bool`/`[Int]`的kind是`*`，将之应用到`[]`便得到`[Int]`/`[Bool]`/`[[Int]]`，这些结果类型的kind是`*`。同理，二元组类型构造器`(,)`的kind是`* -> * -> *`，三元组类型构造器`(,,)`的kind是`* -> * -> * -> *`
 
-## HKT Usage
+## HKT in Programming
 
 静态类型语言中，类型系统来保证值的使用安全性，kind系统是来保证类型的使用安全性。
 
@@ -72,9 +71,7 @@ trait Iterable[T, Container[_]] {
 trait List[T] extends Iterable[T, List]
 ```
 
-以上代码简单演示了引入HKT带来的收益(代码样例来自[Generics of a Higher Kind](https://adriaanm.github.com/files/higher.pdf))。
-
-## HKT in Programming
+以上代码用Scala简单演示了引入HKT带来的收益，确实减少了不必要的代码重复，而对于类型安全的保证也不会有任何损失。下面是个稍复杂些的例子，用Haskell和Scala对函子进行定义和实现，从而对HKT进行演示。
 
 ```haskell
 -- Functor in Haskell
@@ -128,28 +125,14 @@ class FunctionFunctor[R] extends Functor[({type λ[A] = R => A})#λ] {
 }
 ```
 
-分析以上代码，定义函子`Functor`用到了参数`f`/`F[_]`，该参数是个类型构造器，其kind便是`* -> *`，于是函子`Functor`的kind便是`(* -> *) -> *`，这里便是kind的“高阶”所在。此外要注意函数类型构造`(->)`，对于其返回类型呈(协变)函子性，因此可以固定函数参数类型为`r`/`R`，然后可实现`r -> ?`/`R => ?`函子。
+分析以上代码，定义函子`Functor`用到了参数`f`/`F[_]`，该参数是个类型构造器，其kind便是`* -> *`，于是函子`Functor`的kind便是`(* -> *) -> *`，这里便是kind的“高阶”所在。此外要注意函数类型构造`(->)`，对于其返回类型呈(协变)函子性，因此可以固定函数参数类型为`r`/`R`，然后可实现`r -> ?`/`R => ?`函子。Scala中需要显示指出类型构造器，Haskell可以通过对于参数的应用推断出这是个类型还是个类型构造器。
 
-[Generics of a Higher Kind](https://adriaanm.github.com/files/higher.pdf)解释了Scala对于HKT的设计及应用演示，论文中给出了一个更具实用意义的例子，通过对`Iterable`基础类库的设计和实现，演示了HKT存在的必要性（上文已简要演示）。此外也简要解释了Scala的“implicit”设计理念，该设计以另一种方式提供了Haskell的Type Class提供的特设多态(ad-hoc polymorphism)功能
-
-Scala的Kind System中，kind还附带着上下界、可变性信息，以此来保证
+论文[Generics of a Higher Kind](https://adriaanm.github.com/files/higher.pdf)解释了Scala对于HKT的设计及应用演示，论文中给出了一个更具实用意义的例子，通过对`Iterable`基础类库的设计和实现，演示了HKT存在的必要性（上文已简要演示）。此外也简要解释了Scala的“implicit”设计理念，该设计以另一种方式提供了Haskell的Type Class提供的特设多态(ad-hoc polymorphism)功能。此外，Scala的Kind System中，kind还附带着类型的上下界、可变性的约束信息，以此来确保程序的正确性。
 
 ---
 
-## 相关链接
+F#尚不支持HKT，需要CLR改进才能支持这一功能，对功能的讨论在：[Simulate higher-kinded polymorphism](https://github.com/fsharp/fslang-suggestions/issues/175)。[Robert Kuzelj](https://robkuz.github.io/)的[Higher Kinded Types in F#](https://robkuz.github.io/Higher-kinded-types-in-fsharp-Intro-Part-I/)系列博客演示了HKT存在的必要性以及在F#中如何对其进行模拟。
 
-Scala语言对此的设计：
+[Higher Kinded Types in typescript](https://www.thesoftwaresimpleton.com/blog/2018/04/14/higher-kinded-types)博客介绍了在TypeScript中对HKT功能进行模拟。
 
-[Higher Kinded Types in typescript](https://www.thesoftwaresimpleton.com/blog/2018/04/14/higher-kinded-types)
-
-[Higher Kinded Types in F#](https://robkuz.github.io/Higher-kinded-types-in-fsharp-Intro-Part-I/)
-
-[Higher-rank and higher-kinded types](https://www.stephanboyer.com/post/115/higher-rank-and-higher-kinded-types)
-
-关于对F#添加该功能的讨论：
-
-[Simulate higher-kinded polymorphism](https://github.com/fsharp/fslang-suggestions/issues/175)
-
-[Scala类型系统——高级类类型(higher-kinded types)](https://my.oschina.net/Barudisshu/blog/690595)
-
-[高阶类型 Higher Kinded Type](https://zhuanlan.zhihu.com/p/29021140)
+Rust对HKT的似乎也开始支持，[高阶类型 Higher Kinded Type](https://zhuanlan.zhihu.com/p/29021140)对此进行了简单介绍，看评论似乎不是HKT完整支持。
