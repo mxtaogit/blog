@@ -1,0 +1,3 @@
+# Objective-Orientation
+
+for oo paradigm ...
