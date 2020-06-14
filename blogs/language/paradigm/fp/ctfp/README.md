@@ -31,7 +31,13 @@ CTFP-PDF：[hmemcpy/milewski-ctfp-pdf](https://github.com/hmemcpy/milewski-ctfp-
 
 ---
 
-## 阅读笔记
+## Notes
+
+[Part 1](./category-theory-notes.md)
+
+## ~~阅读笔记~~
+
+本部分阅读笔记是对于翻译版和原文的对照阅读进行记录，后期比较草率。翻译版本仅第一部分，已重新写了其他笔记，并对内容进行了理解和延申
 
 1. [Category: The Essence of Composition](./1.category-the-essence-of-composition.md)
 2. [Types and Functions](./2.types-and-functions.md)
