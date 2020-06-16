@@ -1270,14 +1270,20 @@ class Functor m => Monad m where
 
 以上几个概念在范畴论中的表示如下所示
 
-| Haskell | Math | |
-| :- | :-: | :- |
-| `m` | $T$ |
-| `join` | $\mu$ | $\mu :: T^2 \rightarrow T$ |
-| `return` | $\eta$ | $\eta :: Id \rightarrow T$ |
+| Code | | Math | |
+| :- | :- | :-: | :- |
+| `m` | | $T$ |
+| `join` | `join :: m (m a) -> m a` | $\mu$ | $\mu :: T^2 \rightarrow T$ |
+| `return` | `return :: a -> m a` | $\eta$ | $\eta :: Id \rightarrow T$ |
 
 在范畴论中，自函子$T$和两个自然变换$\mu$和$\eta$能够成一个单子，此外要求自然变换遵守结合律和恒等法则。
 
+> monad is a monoid in the endofunctor category.
+
+
+[Monad (category theory)](https://en.wikipedia.org/wiki/Monad_(category_theory))
+
+[Monad (functional programming)](https://en.wikipedia.org/wiki/Monad_(functional_programming))
 
 ## ！！！
 
