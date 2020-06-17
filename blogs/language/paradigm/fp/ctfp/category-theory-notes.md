@@ -1280,11 +1280,12 @@ class Functor m => Monad m where
 
 > monad is a monoid in the endofunctor category.
 
-
 [Monad (category theory)](https://en.wikipedia.org/wiki/Monad_(category_theory))
 
 [Monad (functional programming)](https://en.wikipedia.org/wiki/Monad_(functional_programming))
 
-## ！！！
+看了下维基上的相关内容，还有很多概念尚不理解，留待之后更新
 
-+ [ ] Monad Section Fix
+**TO BE FIXED**
+
++ [ ] Monad Update
