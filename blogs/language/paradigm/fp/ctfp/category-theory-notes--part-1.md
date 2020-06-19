@@ -3,8 +3,9 @@ author: mxtao
 date: 2020-04-07
 ---
 
-# 范畴论
+# 范畴论 - Part 1
 
+> CTFP博客系列及视频笔记，第一部分
 
 ## 范畴 / Category
 
