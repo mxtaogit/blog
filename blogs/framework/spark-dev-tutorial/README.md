@@ -38,3 +38,7 @@ Spark Application Development Tour
 5. [练手](./5-exam.md)
 
     几个练习
+
+--- 
+
+[Spark Release 3.0.0](https://spark.apache.org/releases/spark-release-3-0-0.html)
