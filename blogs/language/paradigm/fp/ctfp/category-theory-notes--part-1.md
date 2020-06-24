@@ -1287,6 +1287,8 @@ class Functor m => Monad m where
 
 看了下维基上的相关内容，还有很多概念尚不理解，留待之后更新
 
+[What is the difference between monoid and monad?](https://www.quora.com/What-is-the-difference-between-monoid-and-monad)
+
 **TO BE FIXED**
 
 + [ ] Monad Update
