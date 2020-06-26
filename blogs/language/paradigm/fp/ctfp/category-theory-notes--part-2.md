@@ -2,3 +2,6 @@
 
 declarative programming
 
+limits and colimits
+
+端和余端
