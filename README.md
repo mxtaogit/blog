@@ -18,5 +18,6 @@ this is my blog archive repository.
 + [Asynchronous C# and F#](http://tomasp.net/blog/csharp-fsharp-async-intro.aspx/)  [Tomas Petricek - New ways of thinking in programming & working with data](http://tomasp.net/)
 + [F# for fun and profit](https://fsharpforfunandprofit.com/)
 + [Jichao Ouyang's Blog](https://blog.oyanglul.us/)
++ [THE COCKNEY CODER](https://cockneycoder.wordpress.com/)
 + [廖雪峰的网站](https://www.liaoxuefeng.com/)
 + [金老师的在线自学网站](http://jinxuliang.com/)
