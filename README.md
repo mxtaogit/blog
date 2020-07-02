@@ -24,4 +24,4 @@ this is my blog archive repository.
 
 
 
-[Will C# replace F#?](https://www.compositional-it.com/news-blog/will-csharp-replace-fsharp/?utm_content=buffer33563&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
+[Will C# replace F#?](https://www.compositional-it.com/news-blog/will-csharp-replace-fsharp/)
