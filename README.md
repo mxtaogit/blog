@@ -23,5 +23,5 @@ this is my blog archive repository.
 + [金老师的在线自学网站](http://jinxuliang.com/)
 
 
-
+[Writing More Succinct C#](https://www.danclarke.com/2020-more-succinct-csharp)
 [Will C# replace F#?](https://www.compositional-it.com/news-blog/will-csharp-replace-fsharp/)
