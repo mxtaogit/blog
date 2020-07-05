@@ -35,3 +35,17 @@ Spark文档中对于CSV支持的配置有详细介绍。
 最新版本的参考文档：[DataFrameReader#csv](https://spark.apache.org/docs/latest/api/scala/org/apache/spark/sql/DataFrameReader.html#csv(paths:String*):org.apache.spark.sql.DataFrame)
 
 Spark 2.4.6参考文档：[DataFrameReader#csv](https://spark.apache.org/docs/2.4.6/api/scala/index.html#org.apache.spark.sql.DataFrameReader@csv(paths:String*):org.apache.spark.sql.DataFrame)
+
+## Spark CLI
+
+要逐渐脱离灵活性较差的任务调度服务、逐渐开始习惯用原生CLI进行进行任务的提交
+
+`spark-submit --name JOB-NAME --master yarn --deploy-mode cluster --conf spark.yarn.submit.waitAppCompletion=false --class com.mxtao.App --jars /xxx/xxx.jar,/xxx/xxxx.jar --queue xx --pincipal xxx@DOMAN --keytab xxx.keytab main-class-in-this-jar.jar args-for-main`
+
+[Submitting Applications](https://spark.apache.org/docs/latest/submitting-applications.html)
+
+[Running Spark on YARN - Spark Properties](https://spark.apache.org/docs/latest/running-on-yarn.html#spark-properties)
+
+[Submitting Applications](https://spark.apache.org/docs/2.4.6/submitting-applications.html)
+
+[Running Spark on YARN - Spark Properties](https://spark.apache.org/docs/2.4.6/running-on-yarn.html#spark-properties)
