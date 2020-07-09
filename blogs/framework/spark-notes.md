@@ -2,6 +2,8 @@
 
 随手记录Spark相关的问题、思考等
 
+[Spark SQL在100TB上的自适应执行实践](https://cloud.tencent.com/developer/article/1038770)
+
 ## Spark SQL - DataSource
 
 通过实现Spark定义的DataSource接口为Spark新增自定义数据源
