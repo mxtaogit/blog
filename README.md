@@ -19,9 +19,7 @@ this is my blog archive repository.
 + [F# for fun and profit](https://fsharpforfunandprofit.com/)
 + [Jichao Ouyang's Blog](https://blog.oyanglul.us/)
 + [THE COCKNEY CODER](https://cockneycoder.wordpress.com/)
++ [ONE DIV ZERO](http://james-iry.blogspot.com/)
+
 + [廖雪峰的网站](https://www.liaoxuefeng.com/)
 + [金老师的在线自学网站](http://jinxuliang.com/)
-
-
-[Writing More Succinct C#](https://www.danclarke.com/2020-more-succinct-csharp)
-[Will C# replace F#?](https://www.compositional-it.com/news-blog/will-csharp-replace-fsharp/)
