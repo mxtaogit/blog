@@ -1,26 +1,33 @@
-# Language
+# 编程语言
 
-for language syntax or advanced features ...
+本目录用于整理编程语言相关内容。包括基本的语法和语言功能、高级语言功能、编程范式等方
 
-## Content
+## 现有内容
 
-[Will C# replace F#?](https://www.compositional-it.com/news-blog/will-csharp-replace-fsharp/?utm_content=buffer33563&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
++ 基础概念
+  + CSS 选择器
+  + F# 基础语法和概念
+  + PowerShell 部分脚本样例
++ 高级功能
+  + HKT
++ 编程范式
+  + FP
+    + CTFP【未全部完成】
 
-+ baiscs
-  + csharp
-  + css
-  + fsharp
-  + haskell
-  + powershell
-  + scala
-  + markdown
-  + yaml
-+ feature
-  + generic bound
-  + higher kinded type
-  + higer rank type
-  + variant
-+ paradigm
-  + fp
-    + ctfp
-  + oo
+## 未完成内容
+
++ 基础概念
+  + [ ] C#
+  + [ ] Haskell
+  + [ ] Java
+  + [ ] Scala
+  + [ ] Markdown
+  + [ ] Yaml
++ 高级功能
+  + [ ] 泛型约束
+  + [ ] HRT
+  + [ ] 可变性
++ 编程范式
+  + FP
+    + [ ] CTFP
+  + OO
