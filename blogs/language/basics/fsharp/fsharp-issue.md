@@ -46,3 +46,6 @@ let t2 x = (String.length x, 1.3)
 let b = t1 >=> t2
 
 ```
+
+
+一个大乌龙，`inline`标记的函数才会有预期的自动泛化行为
