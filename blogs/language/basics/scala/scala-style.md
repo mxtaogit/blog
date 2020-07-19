@@ -36,3 +36,13 @@ val myLongFieldNameWithNoRealPoint =
     "this is a string",
     3.1415)
 ```
+
+## 命名约定
+
+该部分内容参考[NAMING CONVENTIONS](https://docs.scala-lang.org/style/naming-conventions.html)
+
+绝大多数情况下，Scala采用小驼峰风格`lowerCamelCase`，一些缩写术语也作为普通单词对待`xHtml`/`maxId`，由于下划线在Scala语法中有特殊意义，因此非常不推荐使用（若要强行使用、编译器也不会主动拒绝此类代码）
+
+### 类、特质
+
+类和特质的命名应当遵循大驼峰风格
