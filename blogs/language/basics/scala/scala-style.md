@@ -220,3 +220,6 @@ def foo(a: FooParam) = ...
 
 > 结构类型是在运行时用反射实现的，因此性能较差。开发时还是应尽可能选择常规类型，除非结构类型能带来明显的益处
 
+## NESTED BLOCKS
+
+[NESTED BLOCKS](https://docs.scala-lang.org/style/nested-blocks.html)
