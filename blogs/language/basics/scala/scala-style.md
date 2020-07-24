@@ -227,3 +227,22 @@ def foo(a: FooParam) = ...
 ### 代码块
 
 左花括号必须跟它所归属定义的声明放在同一行
+
+### 括号
+
+当某表达式跨越多行且需要小括号包裹时，左右两小括号与其包裹的内容之间应当没有空格、并且与内容保持同一行；
+
+```scala
+(this + is a very ++ long *
+  expression)
+```
+
+小括号也可用于禁用分号推断，因此允许更喜欢将操作符写在开头的开发者写出如下代码
+
+```scala
+(  someCondition
+|| someOtherCondition
+|| thirdCondition
+)
+```
+
