@@ -246,3 +246,6 @@ def foo(a: FooParam) = ...
 )
 ```
 
+## 声明
+
+[DECLARATIONS](https://docs.scala-lang.org/style/declarations.html)
