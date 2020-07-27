@@ -249,3 +249,43 @@ def foo(a: FooParam) = ...
 ## 声明
 
 [DECLARATIONS](https://docs.scala-lang.org/style/declarations.html)
+
+类、对象、特质的构造器应当尽可能放在一整行里，当这一行过长（比如超出100字符）的时候，那么需要将该行拆成多行，每个构造器参数及其跟随的逗号占一行，如下所示
+
+```scala
+// 单行形式
+class Person(name: String, age: Int) {
+  …
+}
+
+// 多行形式
+class Person(
+  name: String,
+  age: Int,
+  birthdate: Date,
+  astrologicalSign: String,
+  shoeSize: Int,
+  favoriteColor: java.awt.Color,
+) {
+  def firstMethod: Foo = …
+}
+```
+
+若是该类、对象、特质扩展了其他成员，采用同样的规则。尽可能放在一行里，若是单行超出100字符，那就拆成如下的多行形式
+
+```scala
+class Person(
+  name: String,
+  age: Int,
+  birthdate: Date,
+  astrologicalSign: String,
+  shoeSize: Int,
+  favoriteColor: java.awt.Color,
+) extends Entity
+  with Logging
+  with Identifiable
+  with Serializable {
+
+  def firstMethod: Foo = …
+}
+```
