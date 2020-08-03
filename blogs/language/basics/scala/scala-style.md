@@ -392,3 +392,32 @@ val f1 = { (a: Int, b: Int) =>
 ```
 
 此外，函数值的声明和调用都应尽可能发挥编译器类型推断的功能。
+
+## 控制结构
+
+所有的控制结构关键词`if`/`for`/`while`之后都必须紧跟一个空格
+
+### 花括号
+
+当控制结构表达的是一个纯函数式操作并且各个分支都只是单行表达式时应当省略花括号
+
++ `if`表达式：若是存在`else`分支，则应当省略花括号；否则必须用花括号包裹起来，哪怕只有单行表达式
++ `while`：必须带上花括号（因为它永远不可能描述一个纯函数式操作）
++ `for`：若是有`yield`语句，那么可以省略花括号；否则必须用花括号包裹循环体，哪怕仅有一行表达式
++ `case`: 省略花括号
+
+```scala
+val news = if (foo)
+  goodNews()
+else
+  badNews()
+
+if (foo) {
+  println("foo was true")
+}
+
+news match {
+  case "good" => println("Good news!")
+  case "bad" => println("Bad news!")
+}
+```
