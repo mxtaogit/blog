@@ -395,6 +395,8 @@ val f1 = { (a: Int, b: Int) =>
 
 ## 控制结构
 
+[CONTROL STRUCTURES](https://docs.scala-lang.org/style/control-structures.html)
+
 所有的控制结构关键词`if`/`for`/`while`之后都必须紧跟一个空格
 
 ### 花括号
@@ -421,3 +423,45 @@ news match {
   case "bad" => println("Bad news!")
 }
 ```
+
+### `for`-Comprehensions
+
+在`for`语句中可以写多个生成器（即多个`<-`）对于存在`yield`语句的`for`表达式，当有多个生成器的时候，要用花括号包裹且每个生成器占一行；仅有一个生成器的时候，用小括号包裹，如下
+
+```scala
+// right
+for (i <- 0 to 10) yield i
+
+// wrong!
+for (x <- board.rows; y <- board.files)
+  yield (x, y)
+
+// right!
+for {
+  x <- board.rows
+  y <- board.files
+} yield (x, y)
+```
+
+存在特例，对于那些没有`yield`的`for`表达式，这种情况属于普通的循环而不是函数式操作，此时使用小括号包裹一个或多个生成器
+
+```scala
+// wrong!
+for {
+  x <- board.rows
+  y <- board.files
+} {
+  printf("(%d, %d)", x, y)
+}
+
+// right!
+for (x <- board.rows; y <- board.files) {
+  printf("(%d, %d)", x, y)
+}
+```
+
+for-comprehensions可能会常倾向于链接`map`、`flatMap`、`filter`等调用，但是会导致代码可读性很差，因此这种情况要尽可能用增强的for表达式
+
+### 细碎的条件判断
+
+有些需要三元操作符`?`/`:`的场景，scala中无这样的操作符，但是可以直接用简单的`if`/`else`表达式来表述，例如`val res = if (foo) bar else baz`。要注意这种风格不要在命令式运用`if`/`else`时使用
