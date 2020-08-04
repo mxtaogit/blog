@@ -465,3 +465,19 @@ for-comprehensions可能会常倾向于链接`map`、`flatMap`、`filter`等调�
 ### 细碎的条件判断
 
 有些需要三元操作符`?`/`:`的场景，scala中无这样的操作符，但是可以直接用简单的`if`/`else`表达式来表述，例如`val res = if (foo) bar else baz`。要注意这种风格不要在命令式运用`if`/`else`时使用
+
+### 方法调用
+
+[METHOD INVOCATION](https://docs.scala-lang.org/style/method-invocation.html)
+
+简要来讲，Scala中的方法调用遵循Java风格的约定。在调用对象、点、方法名之间没有空格，方法名和参数列表之间没有空格，参数之间应当以逗号和一个空格隔开。
+
+Scala 2.8开始支持了命名参数，进行方法调用时，命名参数整体应当看作一个普通参数（即逗号加一个空格分隔），命名参数自身等号两侧应当各有一个空格
+
+```scala
+foo(42, bar)
+target.foo(42, bar)
+target.foo()
+
+foo(x = 6, y = 7)
+```
