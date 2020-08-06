@@ -466,7 +466,7 @@ for-comprehensions可能会常倾向于链接`map`、`flatMap`、`filter`等调�
 
 有些需要三元操作符`?`/`:`的场景，scala中无这样的操作符，但是可以直接用简单的`if`/`else`表达式来表述，例如`val res = if (foo) bar else baz`。要注意这种风格不要在命令式运用`if`/`else`时使用
 
-### 方法调用
+## 方法调用
 
 [METHOD INVOCATION](https://docs.scala-lang.org/style/method-invocation.html)
 
@@ -482,7 +482,7 @@ target.foo()
 foo(x = 6, y = 7)
 ```
 
-#### 0元函数/无参函数
+### 0元函数/无参函数
 
 Scala允许省略0元函数调用时的括号。当要调用的方法没有任何副作用的时候才能用这种语法，否则必须带上括号。
 
@@ -539,4 +539,8 @@ names.map { _.toUpperCase }                           // x
 names.map { _.toUpperCase }.filter { _.length > 5 }   // √
 names map { _.toUpperCase } filter { _.length > 5 }   // √
 ```
+
+## 文件
+
+[FILES](https://docs.scala-lang.org/style/files.html)
 
