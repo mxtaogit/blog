@@ -486,6 +486,57 @@ foo(x = 6, y = 7)
 
 Scala允许省略0元函数调用时的括号。当要调用的方法没有任何副作用的时候才能用这种语法，否则必须带上括号。
 
+```scala
+xx.toString()     // √
+xx.toString       // √
+
+println()         // √
+println           // x
+```
+
 #### Postfix Notation/后缀写法
 
 此外，对于无参数函数，Scala也允许采用后缀写法，但是要尽可能避免，这里只是给出了有这种写法，但是非常不建议使用。仅限在某些DSL中才允许用这种写法。
+
+```scala
+names.toList    
+names toList    // x
+```
+
+### 1元函数/单个参数 - 中缀写法
+
+对于这类函数，Scala允许一种完全无需任何符号的语法，即中缀写法。通常情况下，应当注意避免这种语法，但当方法名是个符号参数部分是个函数的时候可以用，当然也必须保证是在纯函数的环境中用。
+
+```scala
+names.mkString(",")     // √
+names mkString ","      // 有时会见到这种写法，但这种写法存在争议，要避免
+javaList add item       // x
+```
+
+#### 符号方法、操作符
+
+这种方法/函数必须要以中缀风格来进行调用。
+
+```scala
+"daniel" + " " + "spiewak"    // √
+a + b                         // √
+
+"daniel"+" "+"spiewak"        // x
+a+b                           // x
+a.+(b)                        // x
+```
+
+绝大多数情况下，遵循Java和Haskell中的约定。在某些灰色地带中，对那些方法名短小、实际效果类似操作符的函数，尤其是当它满足了交换律的时候，例如`max`，`x max y`这种写法也是相当常见的。
+
+符号方法可能接受多个参数，这种情况下要用中缀语法来调用，`foo ** (bar, baz)`。这种方法其实相当少了，在设计API的时候应注意，尽可能避免设计出这样的API。Scala的集合API设计中存在`/:`和`:\`，尽量不要使用它们，转而使用更具意义的方法名`foldLeft`和`foldRight`。
+
+#### 高阶函数
+
+对于那些接受一个函数为参数的方法，应尽量使用的中缀语法。但是用中缀语法的时候不要带着多余的符号了
+
+```scala
+names.map { _.toUpperCase }                           // x
+names.map { _.toUpperCase }.filter { _.length > 5 }   // √
+names map { _.toUpperCase } filter { _.length > 5 }   // √
+```
+
