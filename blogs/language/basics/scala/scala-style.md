@@ -544,3 +544,35 @@ names map { _.toUpperCase } filter { _.length > 5 }   // √
 
 [FILES](https://docs.scala-lang.org/style/files.html)
 
+一般来讲，文件中应当只包含逻辑上的单个组件。所谓“逻辑上”的单个组件，指的是一个类型、特质或对象。当类或特质有其伴生对象时，要将伴生对象放在类或特质的同一文件中。文件名应当就是类、特质或对象的名称。此外，应当按照其包的结构放在相同目录结构中。
+
+> Scala放宽了对于文件名、目录结构的限制，但实际编程中还是应注意遵循Java风格的约定。
+
+```scala
+package com.novell.coolness
+
+class Inbox { ... }
+
+// companion object
+object Inbox { ... }
+```
+
+### 多元素文件
+
+有些很特殊的情况就是要违反以上约定。
+
+一个很常见的例子便是对于封闭抽象类、封闭特质及其子类的实现（一般是对ADT相关功能的实现）。因为封闭类、特质从语言级别就约束了其子类必须与其在同一个源文件中。
+
+```scala
+sealed trait Option[+A]
+
+case class Some[A](a: A) extends Option[A]
+
+case object None extends Option[Nothing]
+```
+
+另一个常见场景是多个类从逻辑上很内聚，它们基于同样的一组前提或者概念，为方便维护便放在了同一个源文件中。这种情况确实存在，但应仔细斟酌是否放到一个源文件中
+
+> 所有的多元素文件都必须以小驼峰给文件命名
+
+例如`option.scala`、`ast.scala`
