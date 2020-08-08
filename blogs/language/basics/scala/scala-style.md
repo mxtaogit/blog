@@ -576,3 +576,9 @@ case object None extends Option[Nothing]
 > 所有的多元素文件都必须以小驼峰给文件命名
 
 例如`option.scala`、`ast.scala`
+
+## 文档
+
+[SCALADOC](https://docs.scala-lang.org/style/scaladoc.html)
+
+应当为所有的包、类、特质、方法及其他成员提供详细的文档。Scala文档遵循Java的文档风格，此外也提供了更丰富的功能用于简化文档的书写
