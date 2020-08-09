@@ -581,4 +581,42 @@ case object None extends Option[Nothing]
 
 [SCALADOC](https://docs.scala-lang.org/style/scaladoc.html)
 
-应当为所有的包、类、特质、方法及其他成员提供详细的文档。Scala文档遵循Java的文档风格，此外也提供了更丰富的功能用于简化文档的书写
+应当为所有的包、类、特质、方法及其他成员提供详细的文档。Scala文档遵循Java的文档风格，此外也提供了更丰富的功能用于简化文档的书写。
+
+应当更关注文档的主旨和内容，而不是格式。文档以简短的概括开始，然后再给出更深入的细节描述。一下给出几种常见风格
+
+```scala
+// ---- Java doc 风格 ----
+
+/**
+ * Provides a service as described.
+ *
+ * This is further documentation of what we're documenting.
+ * Here are more details about how it works and what it does.
+ */
+def member: Unit = ()
+
+// ---- Scala doc 风格 （星号在第二列对齐） ----
+
+/** Provides a service as described.
+ *
+ *  This is further documentation of what we're documenting.
+ *  Here are more details about how it works and what it does.
+ */
+def member: Unit = ()
+
+// ---- Scala doc 风格 （星号在第三列对齐） ----
+
+/** Provides a service as described.
+  *
+  * This is further documentation of what we're documenting.
+  * Here are more details about how it works and what it does.
+  */
+def member: Unit = ()
+
+// ---- 某些特别简单的注释 ----
+
+/** Does something very simple */
+def simple: Unit = ()
+```
+
