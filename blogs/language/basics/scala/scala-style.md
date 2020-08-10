@@ -619,4 +619,4 @@ def member: Unit = ()
 /** Does something very simple */
 def simple: Unit = ()
 ```
-
+[SCALADOC FOR LIBRARY AUTHORS](https://docs.scala-lang.org/overviews/scaladoc/for-library-authors.html)
