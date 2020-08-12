@@ -18,3 +18,5 @@
 一个有趣的项目  https://github.com/typelevel/kind-projector
 
 [SCALA FAQS](https://docs.scala-lang.org/tutorials/FAQ/index.html)
+
+[WHERE DOES SCALA LOOK FOR IMPLICITS?](https://docs.scala-lang.org/tutorials/FAQ/finding-implicits.html)
