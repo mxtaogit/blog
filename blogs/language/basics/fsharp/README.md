@@ -7,3 +7,6 @@ F# Lang
 [F# Performance Tips and Tricks - Comparison of different F# data pipelines](https://fsharp.programmingpedia.net/en/tutorial/3562/fsharp-performance-tips-and-tricks)
 
 [Parsing in F# with FParsec](https://tyrrrz.me/blog/parsing-with-fparsec)
+
+
+[F# RFC FS-1043 - Extension members become available to solve operator trait constraints](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1043-extension-members-for-operators-and-srtp-constraints.md)
