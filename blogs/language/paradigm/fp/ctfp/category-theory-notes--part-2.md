@@ -1,4 +1,15 @@
+---
+author: mxtao
+date: 2020-04-07
+---
+
 # 范畴论 - Part 2
+
+> CTFP博客系列及视频笔记，第二部分
+
+## 范畴论及声明式编程
+
+
 
 declarative programming
 
