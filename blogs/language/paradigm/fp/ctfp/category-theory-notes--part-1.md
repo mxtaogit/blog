@@ -237,7 +237,7 @@ f.andThen(g)    // 从左向右复合，实例方法调用形式
 
 在集合范畴中，hom-集自身也是个对象，因为它也是个集合，这种称为内hom-集，如左图所示；对于其它范畴，hom-集只是个范畴之外的集合，这种被称为外-hom集，如右图所示
 
-![](./img/set-hom-set.jpg)   ![](./img/hom-set.jpg)
+![](./img/part-1-notes/set-hom-set.jpg)   ![](./img/part-1-notes/hom-set.jpg)
 
 ## 序 / Order
 
@@ -422,7 +422,7 @@ trait T[A, B] {         // 定义一个泛型特质，该特质将会被编译�
 
 第二步涉及到泛构造的另一方面：排序，或者说对比。需要有这么一个规则，能取对比符合给出模式的两个实例，最终找出最好的那个。现有两个候选，`c`和`p::c->a`及`q::c->b`、`c'`和`p'::c'->a`及`q'::c'->b`，若存在一个态射`m::c'->c`，且由此`m`能重新构造`p'=p.m`和`q'=q.m`，由此可确定`c`比`c'`“更好”。另一个看待这些等式的视角是：`m`看作一个因子，它能将`p'`和`q'`进行“因式分解”。下图给出更直观的复合关系
 
-![](./img/productranking.jpg)
+![](./img/part-1-notes/productranking.jpg)
 
 > 投影`p`和`q`在Haskell/F#中对应物为`fst`和`snd`，其作用是解构二元组。前者取第一个成分、后者取第二个成分。
 
@@ -430,7 +430,7 @@ trait T[A, B] {         // 定义一个泛型特质，该特质将会被编译�
 
 现在演示`(Int, Bool)`二元组及其映射`fst`和`snd`为何比前面给出的候选积更好。参考下图，对于`Int`，存在一个`m::Int->(Int,Bool)`例`m x = (x,True)`，那么伴随`Int`的`p` `q`可以这样构造`p x = fst (m x) = x`及`q x = snd (m x) = True`；同理，伴随三元组的`m`可以这样实现`m (x,_,b) = (x,b)`。
 
-![](./img/not-a-product.jpg)
+![](./img/part-1-notes/not-a-product.jpg)
 
 已经证明了`(Int, Bool)`为何优于另外两者，但仅这样似乎不够完全说服人，因此此处再给出为何反过来就不成立。对于`Int`，是否能找到一个`m'`用于从`p` `q`构造出`fst` `snd`？假如存在，那么就有`fst = p . m'` `snd = q . m'`，已知伴随`Int`的`q`永远是`True`，而`(Int, Bool)`元组中第二成分是`False`的二元组确实存在，因此永远无法从`q`构造出`snd`。而对于`(Int, Int, Bool)`情况就不一样了，总是可以得到足够的信息，但是这里却存在无数个`m'`可以去对`fst` `snd`进行“因式分解”，例如`m' (x, b) = (x, x, b)` `m' (x, b) = (x, 42, b)`等无数个实现。
 
@@ -448,7 +448,7 @@ trait T[A, B] {         // 定义一个泛型特质，该特质将会被编译�
 
 同范畴论中每个构造一样，积的对偶是余积。将积范式中态射的方向反转，便得到了一个对象`c`伴随着两个入射`i :: a -> c`和`j :: b -> c`。对符合余积模式构造的排序方式也反转了，若存在一个态射`m :: c -> c'`，能对伴随`c'`的入射`i' :: a -> c'`及`j' :: b -> c'`进行“类因式分解”，即`i' = m . i`及`j' = m . j`，如下图所示。因此这个“最好”的对象，对任意的其它模式都有一个唯一的态射“发射”出去，这个对象就是余积。只要它存在，那么它在同构意义上就是唯一的，且这个同构也是唯一的。
 
-![](./img/coproductranking.jpg)
+![](./img/part-1-notes/coproductranking.jpg)
 
 > A **coproduct** of two objects a and b is the object c equipped with two injections such that for any other object c’ equipped with two injections there is a unique morphism m from c to c’ that factorizes those injections.
 
@@ -644,11 +644,11 @@ let (>=>) m1 m2 = fun x ->
 
 函子是范畴之间的映射，给定两个范畴`C`与`D`，函子可以将范畴`C`中的对象映射为`D`中的对象，将`C`中的态射映射为`D`中的态射并“保持结构”。若`C`中有一个对象`a`，它在`D`中的像即为`F a`；`C`中有一个态射`f`从对象`a`出发指向对象`b`，`f`在`D`中的像就是`F f`，它连接了`a`在`D`中的像与`b`在`D`中的像，如下图所示
 
-![Functor](./img/functor.jpg) 
+![Functor](./img/part-1-notes/functor.jpg) 
 
 范畴结构中还包含态射复合及恒等态射。若在范畴`C`中有复合`h = g . f`，被函子`F`映射后，有`F h = F g . F f`；范畴`C`中对象`a`的恒等态射$id_a$被映射成范畴`D`中的$id_{F a}$，且$F id_a = id_{F a}$
 
-![Functor Compose](./img/functorcompos.jpg) ![Functor Id](./img/functorid.jpg)
+![Functor Compose](./img/part-1-notes/functorcompos.jpg) ![Functor Id](./img/part-1-notes/functorid.jpg)
 
 对函子的要求相对严格，因为要求函子保持范畴的结构，它可能会将一些对象“打碎”，也可能会将多个态射“合并”成一个，但它绝不会将任何东西丢弃掉，这种保持结构的约束类似于代数中的连续性条件，也就是说或函子具有“连续性”（函子的连续性还存在更多的限定概念）。
 
@@ -786,7 +786,7 @@ instance Functor (Const c) where
 
 > 注，若一个态射是在范畴的笛卡尔积中定义的，那么它的行为就是将一对对象映射为另一对对象。这样的态射可以复合`(f, g) ∘ (f', g') = (f ∘ f', g ∘ g')`，这样的复合是符合结合律的。此外，也有恒等态射`(id, id)`。范畴的笛卡尔积也是一个范畴。
 
-![](./img/bifunctor.jpg)
+![](./img/part-1-notes/bifunctor.jpg)
 
 将二元函子想象为具有两个参数的函数会更直观一些。要证明二元函子是否是函子，不必借助函子定律，只需独立的考察它的参数即可。如果有一个映射，它将两个范畴映射为第三个范畴，只需证明这个映射相对于每个参数（例如，让另一个参数变成常量）具有函子性，那么这个映射就自然是一个二元函子。对于态射，也可以这样来证明二元函子具有函子性。
 
@@ -804,11 +804,11 @@ class Bifunctor f where
 
 以上是用Haskell定义了一个二元函子，本例中，三个范畴都是Haskell类型范畴。一个二元函子是个类型构造子，它接受两个类型参数，类型变量`f`表示二元函子，关于它的所有应用都是在接受两个类型参数。二元函子伴随着一个“提升”函数`bimap`，它将两个函数映射为`(f a b -> f c d)`函数。`bimap`有一个默认的实现，即`first`与`second`的复合，这表明只要`bimap`分别对两个参数都具备函子性，就意味着它是一个二元函子(如下图)。
 
-![](./img/bimap.jpg) 
+![](./img/part-1-notes/bimap.jpg) 
 
 其他两个类型签名是`first`与`second`，他们分别作用于`bimap`的第一个与第二个参数，因此它们是`f`具有函子性的两个`fmap`证据(如下图)。上述类型类的定义以`bimap`的形式提供了`first`与`second`的默认实现。
 
-![](./img/bifunctor-first.jpg) ![](./img/bifunctor-second.jpg)
+![](./img/part-1-notes/bifunctor-first.jpg) ![](./img/part-1-notes/bifunctor-second.jpg)
 
 当声明`Bifunctor`的一个实例时，可以去实现`bimap`，这样`first`与`second`就不用再实现了；也可以去实现`first`与 `second`，这样就不用再实现`bimap`。当然也可以三个都实现了，但是需要确定它们之间要满足类型类的定义中的那些关系。
 
@@ -893,7 +893,7 @@ instance Functor (Reader r) where
 
 对于每个范畴$C$都存在一个对偶范畴$C^{OP}$，后者包含的对象与前者相同，后者包含的态射与前者一致但方向相反。假设范畴$C^{OP}$与另一个范畴$D$之间存在一个函子$F :: C^{OP} \rightarrow D$，这个函子将$C^{OP}$中的一个态射$f^{OP} :: a \rightarrow b$映射为$D$中的一个态射$F f^{OP} :: F a \rightarrow F b$。该态射$f^{OP}$与范畴$C$中的态射$f :: b \rightarrow a$相对应，两者方向是相反的。其形状如下图所示：
 
-![](./img/contravariant.jpg)
+![](./img/part-1-notes/contravariant.jpg)
 
 现在$F$是一个常规的函子，基于此定义一个映射$G$，该映射不是熟悉的普通函子。这个映射从范畴$C$到范畴$D$，映射对象时功能与$F$相同，映射态射时会先将态射方向反转，然后再使用$F$的功能。$G$接受$C$中的一个态射$f :: b \rightarrow a$，将其映射为相反的态射$f^{OP} :: a \rightarrow b$，然后将函子$F$作用于这个被反转的态射$f^{OP}$，最终得到$F f^{OP} :: F a \rightarrow F b$。$F a$与$G a$相同，$F b$与$G b$相同，因此$G f :: \lparen b \rightarrow a \rparen \rightarrow \lparen G a \rightarrow G b \rparen$。这种反转了态射方向的映射便称为“逆变函子”/Contravariant Functor。注意逆变函子只是来自对偶范畴的一个“常规函子”。之前所述的`Maybe`及`List`等都是“常规函子”，它们称为“协变函子”/Covariant Funcotr。
 
@@ -940,7 +940,7 @@ instance Profunctor (->) where
     rmap = (.)
 ```
 
-![](./img/bimap.jpg)
+![](./img/part-1-notes/bimap.jpg)
 
 ## 函数类型 / Function Type
 
@@ -956,13 +956,13 @@ instance Profunctor (->) where
 
 以上构造通常会命中很多东西，它们都符合这个模式。特别是在集合的范畴中，几乎每一样东西都与其他东西具有相关性。可以选取任意一个对象`z`，将其与`a`形成积，再找个函数将积映射为`b`（除非`b`是空集）。因此需要建立排序机制并找出最好的那个。当且仅当存在一个唯一的从`z'`到`z`的映射，使得`g'`可由`g`来构造，即可判定伴随态射`g`(从`z×a`到`b`)的`z`比伴随`g'`的候选者`z'`更好。如下图所示
 
-![](./img/functionranking.jpg)
+![](./img/part-1-notes/functionranking.jpg)
 
 假设存在态射`h:: z' -> z`，想获得从`z' × a`到`z × a`的态射。由于积类型具备函子性，或者说积类型本身是个函子(更确切的说，是二元自函子)，因此可以提升一对态射。也就是说不仅能定义对象的积，也能定义态射的积。不需要改变`z' × a`这个积的第二个成员，因此要提升的态射序对是`(h, id)`，其中`id`是作用于`a`的恒等态射。现在有`g' = g ∘ (h × id)`。
 
 泛构造的第三个步就是选出最好的那个候选者，将之称为`a⇒b`(在这里，将它视为一个对象的名字即可，不要与 Haskell 类型类的约束符号混淆，下文会给出其他命名方式)。这个对象伴随的“应用”称为`eval`，即`eval :: (a⇒b) × a -> b`。若其他候选者所对应的“应用”`g`都能由`eval`唯一的构造出来，那么`a⇒b`就是最好的那个候选者。
 
-![](./img/universalfunctionobject.jpg)
+![](./img/part-1-notes/universalfunctionobject.jpg)
 
 > 其形式定义如下：
 >
@@ -1073,21 +1073,21 @@ f (Right x) = if x < 0.0 then "Negative double" else "Positive double"
 
 对于范畴$C$与$D$之间的两个函子$F$与$G$，若只关注$C$中的一个对象$a$，它被映射为$D$中的两个对象：$F a$和$G a$，那么应该存在一个函子映射$\alpha_a$，它可以将$F a$映射为$G a$，如下图所示
 
-![](./img/2_natcomp.jpg)
+![](./img/part-1-notes/2_natcomp.jpg)
 
 由于在同一范畴中的对象映射应该不会脱离该范畴，因此不想再额外建立$F a$和$G a$的联系，因此很**自然**地考虑使用现有态射。自然变换本质上是如何选取态射：对于任意对象$a$，自然变换就是选取一个从$F a$到$G a$的态射。若将一个自然变换称为$\alpha$，那么这个态射就称为在$a$上的$\alpha$分量(Component of $\alpha$ at $a$)，记作$\alpha_a$。注：$\alpha_a :: F a \rightarrow G a$，此外$a$是一个在$C$中的对象，而$\alpha_a$是$D$中的一个态射。对于某个$a$，若在$F a$与$G a$之间没有态射，那么$F$与$G$之间也就不存在自然变换。
 
 函子映射的不只是对象，它也能映射态射，而自然变换对态射的映射是固定的，在两函子$F$与$G$之间的任意自然变换下，$F f$必须映射到$G f$。如下图所示，范畴$C$中两个对象$a$与$b$之间的态射$f$，被映射为范畴$D$中的两个态射$F f :: F a \rightarrow F b$和$G f :: G a \rightarrow G b$。自然变换$\alpha$提供了两个态射(即为$\alpha$在$a$及$b$上的两个分量，$\alpha_a :: F a \rightarrow G a$和$\alpha_b :: F b \rightarrow G b$)补全了$D$中的结构。为保证两个从$F a$到$G b$的途径是等价的，必须要引入**自然性条件**/Naturality Condition：$G f \circ \alpha_a = \alpha_b \circ F f$
 
-![](./img/3_naturality.jpg)
+![](./img/part-1-notes/3_naturality.jpg)
 
 自然性条件对于任意态射$f$都成立。若态射$F f$是可逆的，基于自然性条件能给出$\alpha_b = G f \circ \alpha_a \circ (F f)^{-1}$(即$\alpha_a$表示的$\alpha_b$)，如下图所示。若两个对象之间存在多个可逆的态射，上述变换也都成立。尽管态射通常是不可逆的，两个函子之间的自然变换也并非一定存在。与自然变换相关的函子的多寡，可在很大程度上显现这些函子所操纵的范畴的结构。
 
-![](./img/4_transport.jpg)
+![](./img/part-1-notes/4_transport.jpg)
 
 从分量的角度看待自然变换，可以认为自然变换$\alpha$将范畴$C$中的对象$a$映射为范畴$D$中的态射$\alpha_a$；从自然性角度来看，可认为自然变换将态射$f$映射为一个正方形交换图，如下所示。自然变换的这一性质可以让很多范畴便于构造，这些范畴往往包含着这类的交换图。在正确选择函子的情况下，大量的交换条件都能够转换为自然性条件。
 
-![](./img/naturality.jpg)
+![](./img/part-1-notes/naturality.jpg)
 
 自然变换可用于定义函子的同构。若自然变换的各个分量都是同构的（态射可逆），那么这两个函子**自然同构**。若两个函子是自然同构，差不多是在说它们是相同的函子。
 
@@ -1197,17 +1197,17 @@ contramap f . predToStr = predToStr . contramap f
 
 例如，现有函子$F$到函子$G$的自然变换$\alpha$和函子$G$到函子$H$的自然变换$\beta$，它们在对象$a$上的分量是某个态射$\alpha_a :: F a \rightarrow G a$和$\beta_a :: G a \rightarrow H a$，这两个态射是可以复合的，复合结果是另一个态射$\beta_a \circ \alpha_a :: F a \rightarrow H a$，可以将这个结果作为自然变换$\beta \cdot \alpha$（自然变换$\alpha$和$\beta$的复合，复合顺序先$\alpha$后$\beta$）在$a$上的分量，即$(\beta \cdot \alpha)_a = \beta_a \circ \alpha_a$(如下图所示)
 
-![](./img/5_vertical.jpg)
+![](./img/part-1-notes/5_vertical.jpg)
 
 复合后的自然变换依然满足自然性条件$H f \circ (\beta \cdot \alpha)_a = (\beta \cdot \alpha)_b \circ H f$，如下图所示
 
-![](./img/6_verticalnaturality.jpg)
+![](./img/part-1-notes/6_verticalnaturality.jpg)
 
 > 关于自然变换复合的记法
 >
 > 以上的给出的示意图里面，函子是从上向下堆砌的，这种称为**竖向复合**，用小圆点$\cdot$来表示。此外还有**横向复合**，用小圆圈$\circ$表示，有时可能是星号。
 >
-> ![](./img/6a_vertical.jpg)
+> ![](./img/part-1-notes/6a_vertical.jpg)
 >
 > 范畴$C$与范畴$D$之间的函子范畴记作$Func(C, D)$或$[C, D]$，有时也记作$D^C$。最后这种记法暗示了可将函子范畴本身视为一个其它范畴中的函数对象（指数）
 >
@@ -1223,15 +1223,15 @@ contramap f . predToStr = predToStr . contramap f
 
 用函子范畴$D^C$的形式来代替范畴$C$和$D$之间的Hom-集。现有常规的函子符合：来自$D^C$的函子$F$与来自$E^D$的函子$G$复合，可以得到来自$E^C$的函子$G \circ F$。此外，在每个Hom-范畴内部，也存在着复合，这就是函子之间的自然变换或2-态射的竖向复合，如下图所示。
 
-![](./img/8_cat-2-cat.jpg)
+![](./img/part-1-notes/8_cat-2-cat.jpg)
 
 要分析清楚这两种复合之间关系，首先从**Cat**里面选两个函子（或者说1-态射）$F :: C \rightarrow D$和$G :: D \rightarrow E$，以及它们的复合$G \circ F :: C \rightarrow E$，此外还有两个自然变换$\alpha :: F \rightarrow F'$和$\beta :: G \rightarrow G'$，整体关系如下图。显然，不可能对两个自然变换应用竖向复合，因为$\alpha$的终点与$\beta$起点不重合（实际上因为它们属于两个函子范畴$D^C$和$E^D$）。
 
-![](./img/10_horizontal.jpg)
+![](./img/part-1-notes/10_horizontal.jpg)
 
 基于以上条件，很明显可以复合函子$F'$和$G'$得到$G' \circ F'$。现在尝试基于已有的$\alpha$和$\beta$定义一个从$G \circ F$到$G' \circ F'$的自然变换。首先给出简图如下
 
-![](./img/9_horizontal.jpg)
+![](./img/part-1-notes/9_horizontal.jpg)
 
 从范畴$C$中的一个对象$a$开始，它分裂为$D$中的两个对象$F' a$和$F' a$，此外有一个态射$\alpha_a :: F a \rightarrow F' a$连接这两个对象，这个态射是$\alpha$的分量；在从$D$到$E$的时候，两个对象分裂成四个对象$G (F a)$、$G' (F a)$、$G (F' a)$和$G' (F' a)$，还有四个态射形成了一个方格，其中有两个是$\beta$的分量：$\beta_{F a} :: G (F a) \rightarrow G' (F a)$和$\beta_{F' a} :: G (F' a) \rightarrow G' (F' a)$，另两个是$\alpha_a$在两个函子下的象（函子提升了的态射）：$G \alpha_a :: G (F a) \rightarrow G (F' a)$和$G' \alpha_a :: G' (F a) \rightarrow G' (F' a)$。目标是从中找出$G (F a)$到$G' (F' a)$的态射，找到了$G' \alpha_a \circ \beta_{F a}$和$\beta_{F' a} \circ G \alpha_a$，这两者是相等的。这四个态射形成的方格对于$\beta$而言具备自然性。将这个自然变换称为$\alpha$与$\beta$的横向复合：$\beta \circ \alpha :: G \circ F \rightarrow G' \circ F'$
 
