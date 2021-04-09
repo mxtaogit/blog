@@ -14,6 +14,6 @@ F# Lang
 
 [F# RFC FS-1043 - Extension members become available to solve operator trait constraints](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1043-extension-members-for-operators-and-srtp-constraints.md)
 
-[F# RFC FS-1094 - block as FSharp.Core collection, an abbreviation for System.Collections.Immutable.ImmutableArray](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1094-block.md)
+[F# RFC FS-1094 - `block` as FSharp.Core collection, an abbreviation for `System.Collections.Immutable.ImmutableArray`](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1094-block.md)
 
 > F# 5 Features
