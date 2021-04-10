@@ -8,11 +8,11 @@
 
 通过实现Spark定义的DataSource接口为Spark新增自定义数据源
 
-数据源API目前分V1和V2版本，到目前为止[*Spark 3.0.0*](https://spark.apache.org/releases/spark-release-3-0-0.html)似乎还没有完成进化
+数据源API目前分V1和V2版本，~~到目前为止[*Spark 3.0.0*](https://spark.apache.org/releases/spark-release-3-0-0.html)似乎还没有完成进化~~，已在3.0.0版本完成V2版重构
 
 [Data source V2 API refactoring](https://issues.apache.org/jira/browse/SPARK-25390)
 
-貌似将在3.1.0版本将API稳定下来？
+预计将在3.2.0版本将V2版API稳定下来
 
 [Stabilize Data Source V2 API](https://issues.apache.org/jira/browse/SPARK-25186)
 
