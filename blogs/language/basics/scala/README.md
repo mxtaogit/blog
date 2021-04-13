@@ -4,6 +4,8 @@
 
 [Scala 3](https://dotty.epfl.ch/docs/reference/overview.html)
 
+[SCALA 3 - CROSSING THE FINISH LINE](https://www.scala-lang.org/blog/2020/12/15/scala-3-crossing-the-finish-line.html)
+
 ---
 
 ## 语言功能
