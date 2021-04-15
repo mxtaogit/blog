@@ -24,6 +24,8 @@ https://jaceklaskowski.gitbooks.io/mastering-spark-sql/spark-sql-DataSource.html
 
 [Category: datasource-v2-series](http://blog.madhukaraphatak.com/categories/datasource-v2-series/)
 
+[Category: datasource-v2-spark-three](http://blog.madhukaraphatak.com/categories/datasource-v2-spark-three/)
+
 ## Spark SQL - CSV
 
 CSV类型文件中，出于各种原因可能导致Spark SQL解析数据会出错。
