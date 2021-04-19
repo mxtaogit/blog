@@ -17,6 +17,4 @@ F# Language
 [F# RFC FS-1094 - `block` as FSharp.Core collection, an abbreviation for `System.Collections.Immutable.ImmutableArray`](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1094-block.md)
 
 > F# 5 Features
-> 1.
-> 2.
-> 3.
+
