@@ -4,6 +4,8 @@
 
 [Spark SQL在100TB上的自适应执行实践](https://cloud.tencent.com/developer/article/1038770)
 
+[User Defined Aggregate Functions (UDAFs)](http://spark.apache.org/docs/latest/sql-ref-functions-udf-aggregate.html)
+
 ## Spark SQL - DataSource
 
 通过实现Spark定义的DataSource接口为Spark新增自定义数据源
@@ -44,7 +46,7 @@ Spark 2.4.6参考文档：[DataFrameReader#csv](https://spark.apache.org/docs/2.
 
 ## Spark CLI
 
-要逐渐脱离灵活性较差的任务调度服务、逐渐开始习惯用原生CLI进行进行任务的提交
+要脱离灵活性太差的自研任务调度服务、逐渐开始习惯用原生CLI进行进行任务的提交
 
 `spark-submit --name JOB-NAME --master yarn --deploy-mode cluster --conf spark.yarn.submit.waitAppCompletion=false --class com.mxtao.App --jars /xxx/xxx.jar,/xxx/xxxx.jar --queue xx --pincipal xxx@DOMAN --keytab xxx.keytab main-class-in-this-jar.jar args-for-main`
 
