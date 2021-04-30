@@ -16,6 +16,8 @@ F# Language
 
 [F# RFC FS-1094 - `block` as FSharp.Core collection, an abbreviation for `System.Collections.Immutable.ImmutableArray`](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1094-block.md)
 
+[F# RFC FS-1098 - inline-if-lambda attributes on parameters](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1098-inline-if-lambda.md)
+
 > F# 5 Features
 
 > Computation Expression
