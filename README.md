@@ -23,3 +23,4 @@ this is my blog archive repository.
 
 + [廖雪峰的网站](https://www.liaoxuefeng.com/)
 + [金老师的在线自学网站](http://jinxuliang.com/)
++ [林德熙 - Windows 10 App Developer](https://lindexi.gitee.io/)
