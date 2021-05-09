@@ -14,6 +14,8 @@ F# Language
 
 [F# RFC FS-1043 - Extension members become available to solve operator trait constraints](https://github.com/fsharp/fslang-design/blob/master/RFCs/FS-1043-extension-members-for-operators-and-srtp-constraints.md)
 
+[FSharp.Data.Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive)
+
 > F# 5 Features
 
 > Computation Expression
